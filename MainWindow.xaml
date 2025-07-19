@@ -16,29 +16,46 @@
 
     <Window.Resources>
         <SolidColorBrush x:Key="SidebarBaseColor" Color="#2b4a40"/>
+        <SolidColorBrush x:Key="SidebarHoverColor" Color="#36d49a"/>
+        <SolidColorBrush x:Key="SidebarSelectedColor" Color="#36d49a"/>
+        <SolidColorBrush x:Key="SidebarSelectedIndicator" Color="#36d49a"/>
 
         <Style x:Key="SidebarListBoxItemStyle" TargetType="ListBoxItem">
             <Setter Property="Foreground" Value="{StaticResource SidebarBaseColor}" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <!-- Added vertical gap -->
             <Setter Property="Margin" Value="0,10,0,10" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
-                        <Border x:Name="Border" Background="White" CornerRadius="8" Padding="5">
-                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        </Border>
+                        <Grid>
+                            <Border x:Name="SelectionIndicator" Width="4" HorizontalAlignment="Left"
+                                    Background="{StaticResource SidebarSelectedIndicator}" Visibility="Collapsed" />
+
+                            <Border x:Name="ItemBorder" Background="Transparent" CornerRadius="8" Padding="5">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            </Border>
+                        </Grid>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#2b4a40" />
-                                <Setter Property="Foreground" Value="White" />
-                            </Trigger>
+                            <!-- Hover -->
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#2b4a40" />
-                                <Setter TargetName="Border" Property="Opacity" Value="0.7" />
-                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="Foreground" Value="{StaticResource SidebarHoverColor}"/>
                             </Trigger>
+
+                            <!-- Selected -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="SelectionIndicator" Property="Visibility" Value="Visible"/>
+                                <Setter Property="Foreground" Value="{StaticResource SidebarSelectedColor}"/>
+                            </Trigger>
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Foreground" Value="{StaticResource SidebarSelectedColor}"/>
+                                <Setter TargetName="SelectionIndicator" Property="Visibility" Value="Visible"/>
+                            </MultiTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -76,8 +93,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- TOP BAR -->
-                <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#f6f6f8" CornerRadius="15,15,0,0" Padding="5,0">
+                <Border Grid.Row="0" Grid.ColumnSpan="2" Background="White" CornerRadius="15,15,0,0" Padding="5,0">
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -97,9 +113,8 @@
                     </Grid>
                 </Border>
 
-                <!-- SIDEBAR -->
                 <StackPanel x:Name="Sidebar" Background="#ffffff" Grid.Column="0" Width="70" MinWidth="70" Grid.RowSpan="2">
-                    <Button x:Name="BtnMenuToggle" Click="BtnMenuToggle_Click" Style="{StaticResource MenuButtonStyle}" Margin="0,30" HorizontalAlignment="Left">
+                    <Button x:Name="BtnMenuToggle" Click="BtnMenuToggle_Click" Style="{StaticResource MenuButtonStyle}" Margin="0,75" HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Menu" Foreground="#2b4a40" Width="45" Height="40"/>
                         </StackPanel>
@@ -110,11 +125,11 @@
                              BorderThickness="0"
                              SelectionChanged="MenuList_SelectionChanged"
                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                             Margin="0,40,0,0"
+                             Margin="0,-5,0,0"
                              ItemContainerStyle="{StaticResource SidebarListBoxItemStyle}">
                         <ListBoxItem Tag="Dashboard">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ViewDashboard" Width="47" Height="30"
+                                <materialDesign:PackIcon Kind="ViewDashboard" Width="62" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
                                 <TextBlock Text="Dashboard" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
@@ -122,23 +137,23 @@
                         </ListBoxItem>
                         <ListBoxItem Tag="Accounts">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Account" Width="47" Height="30"
+                                <materialDesign:PackIcon Kind="FolderAccount" Width="67" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
-                                <TextBlock Text="Accounts" FontSize="16" FontWeight="Bold"
+                                <TextBlock Text="Entry Form" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                             </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem Tag="Files">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="FolderAccount" Width="47" Height="30"
+                                <materialDesign:PackIcon Kind="Account" Width="67" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
-                                <TextBlock Text="Files" FontSize="16" FontWeight="Bold"
+                                <TextBlock Text="Profile" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                             </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem Tag="Notifications">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Notifications" Width="47" Height="30"
+                                <materialDesign:PackIcon Kind="Notifications" Width="63" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
                                 <TextBlock Text="Notifications" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
@@ -146,7 +161,7 @@
                         </ListBoxItem>
                         <ListBoxItem Tag="Analytics">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ChartLine" Width="47" Height="30"
+                                <materialDesign:PackIcon Kind="ChartLine" Width="59" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
                                 <TextBlock Text="Analytics" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
@@ -154,7 +169,7 @@
                         </ListBoxItem>
                         <ListBoxItem Tag="Settings">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Settings" Width="47" Height="30"
+                                <materialDesign:PackIcon Kind="Settings" Width="57" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
                                 <TextBlock Text="Settings" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
@@ -165,7 +180,7 @@
 
                         <ListBoxItem Tag="Logout">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ExitToApp" Width="47" Height="30"
+                                <materialDesign:PackIcon Kind="ExitToApp" Width="64" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
                                 <TextBlock Text="Logout" FontSize="20" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
@@ -174,8 +189,9 @@
                     </ListBox>
                 </StackPanel>
 
-                <!-- MAIN CONTENT -->
-                <Grid x:Name="RenderPages" Grid.Row="1" Grid.Column="1" Background="#f6f6f8"/>
+                <Grid x:Name="RenderPages" Grid.Row="1" Grid.Column="1" Background="#f6f6f8">
+                    
+                </Grid>
             </Grid>
         </materialDesign:Card>
     </Grid>

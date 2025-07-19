@@ -121,7 +121,7 @@ namespace Social_Blade_Dashboard
                         break;
 
                     case "Accounts":
-                        // accs
+                        RenderPages.Children.Add(new UserEntryForm());
                         break;
 
                     case "Files":
