@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace Social_Blade_Dashboard
 {
@@ -163,6 +166,47 @@ namespace Social_Blade_Dashboard
             }
             return "";
         }
+
+        private byte[] _photoData;
+        private string _photoFileName;
+
+        private void PhotoUpload_Click(object sender, MouseButtonEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Select Photo",
+                Filter = "Image files (*.png;*.jpg;*.jpeg;*.gif;*.bmp)|*.png;*.jpg;*.jpeg;*.gif;*.bmp|All files (*.*)|*.*",
+                FilterIndex = 1
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    
+                    _photoData = File.ReadAllBytes(openFileDialog.FileName);
+                    _photoFileName = Path.GetFileName(openFileDialog.FileName);
+
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.StreamSource = new MemoryStream(_photoData);
+                    bitmap.EndInit();
+
+                    UploadedPhotoImage.Source = bitmap;
+                    UploadedPhotoImage.Visibility = Visibility.Visible;
+                    DefaultPhotoIcon.Visibility = Visibility.Collapsed;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading image: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        
+        public byte[] PhotoData => _photoData;
+        public string PhotoFileName => _photoFileName;
+        public bool HasPhoto => _photoData != null;
 
         private void ClearAllFields()
         {

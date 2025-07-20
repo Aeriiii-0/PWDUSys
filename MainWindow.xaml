@@ -144,7 +144,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Account" Width="67" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
-                                <TextBlock Text="Entry Form" FontSize="16" FontWeight="Bold"
+                                <TextBlock Text="Profile" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                             </StackPanel>
                         </ListBoxItem>
@@ -152,7 +152,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="FolderAccount" Width="67" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
-                                <TextBlock Text="Profile" FontSize="16" FontWeight="Bold"
+                                <TextBlock Text="Entry Form" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                             </StackPanel>
                         </ListBoxItem>

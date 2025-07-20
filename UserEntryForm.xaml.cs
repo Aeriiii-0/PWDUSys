@@ -167,14 +167,17 @@ namespace Social_Blade_Dashboard
 
             var refreshIcon = new System.Windows.Shapes.Path
             {
-                Data = Geometry.Parse("M4 4V20L10.5 14L20 20V4H4Z"),
+                Data = Geometry.Parse("M17.65,6.35C16.2,4.9 14.21,4 12,4C7.58,4 4,7.58 4,12H1l4,4 4-4H6c0-3.31 2.69-6 6-6 " +
+                          "c1.66,0 3.14,0.69 4.22,1.78L13,11h7V4l-2.35,2.35z"),
                 Fill = (Brush)new BrushConverter().ConvertFromString("#065F46"),
-                Width = 14,
-                Height = 14,
+                Width = 16,
+                Height = 16,
                 Stretch = Stretch.Uniform,
-                Margin = new Thickness(0, 0, 5, 0)
+                Margin = new Thickness(0, 0, 5, 0),
+                VerticalAlignment = VerticalAlignment.Center
             };
             refreshStack.Children.Add(refreshIcon);
+
 
             var refreshText = new TextBlock
             {
@@ -263,19 +266,11 @@ namespace Social_Blade_Dashboard
             return new List<Convict>();
         }
 
+        //tatanggalin q 2 wala pa lang naka-connect
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ContentArea.Children.Count > 0 && ContentArea.Children[0] is Grid container)
-            {
-                foreach (var child in container.Children)
-                {
-                    if (child is DataGrid dg)
-                    {
-                        dg.ItemsSource = LoadConvicts();
-                        break;
-                    }
-                }
-            }
+            ContentArea.Children.Clear();
+            ContentArea.Children.Add(CreateConvictRecordsView());
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -306,7 +301,7 @@ namespace Social_Blade_Dashboard
         }
     }
 
-
+    //tatanggalin q 2 wala pa lang naka-connect
     public class Convict
     {
         public string LastName { get; set; }

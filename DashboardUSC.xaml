@@ -7,238 +7,219 @@
              d:DesignHeight="850"
              d:DesignWidth="1100">
 
-    <Grid Background="#F6F5F8">
+    <Grid Background="#F4F8F6">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- Header Section -->
         <Grid Grid.Row="0" Margin="20,20,20,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                <TextBlock Text="📶Good Day!" 
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="📊 Dashboard Overview" 
                           FontSize="16" 
                           FontWeight="Medium"
-                          Foreground="#666"
+                          Foreground="#2F5233"
                           Margin="0,0,0,5"/>
             </StackPanel>
-
-
         </Grid>
 
+        <!-- Main Content -->
         <Grid Grid.Row="1" Margin="20,10,20,20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.2*"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="15"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="200"/>
-                    <RowDefinition Height="10"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <!-- Card 1 - Welcome Card -->
+            <Border Grid.Column="0" Grid.Row="0"
+                    Background="#D8F0E0" 
+                    CornerRadius="16" 
+                    Padding="25"
+                    Height="180">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <Border Grid.Row="0" 
-                        Background="#E6F7F1" 
-                        CornerRadius="20" 
-                        Padding="30">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="Welcome Back!" 
+                                  FontSize="26" 
+                                  FontWeight="Bold"
+                                  Foreground="#1A3D1F"
+                                  Margin="0,0,0,8"/>
+                        <TextBlock Text="We're here to help you keep track of records safely" 
+                                  FontSize="14" 
+                                  Foreground="#2F5233"
+                                  Margin="0,0,0,3"/>
+                        <TextBlock Text="and manage them efficiently."
+                                  FontSize="14" 
+                                  Foreground="#2F5233"/>
+                    </StackPanel>
 
-                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                            <TextBlock Text="Welcome Back!" 
-                                      FontSize="28" 
-                                      FontWeight="Bold"
-                                      Foreground="#2D5A41"
-                                      Margin="0,0,0,10"/>
-                            <TextBlock Text="We're here to help you efficiently manage and" 
-                                      FontSize="16" 
-                                      Foreground="#4A7C59"
-                                      Margin="0,0,0,5"/>
-                            <TextBlock Text="access case information every step of the way."
-                                      FontSize="16" 
-                                      Foreground="#6B8E79"/>
-                        </StackPanel>
+                    <Border Grid.Column="1"
+                            Width="80" 
+                            Height="80"
+                            Background="#B8E6C6" 
+                            CornerRadius="40"
+                            VerticalAlignment="Center">
+                        <TextBlock Text="📈" 
+                                 FontSize="32" 
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
 
-                        <Border Grid.Column="1"
-                                Width="120" 
-                                Height="100"
-                                Background="#D1EDE3" 
-                                VerticalAlignment="Center">
-                            <TextBlock Text="👤" 
-                                     FontSize="48" 
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                </Border>
+            <!-- Card 2 - Statistics Card -->
+            <Border Grid.Column="2" Grid.Row="0"
+                    Background="#C2E8CC" 
+                    CornerRadius="16" 
+                    Padding="25"
+                    Height="180">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <Border Grid.Row="2"
-                        Background="White" 
-                        CornerRadius="20" 
-                        Padding="25" Margin="0,0,0,10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="Quick Stats" 
+                                  FontSize="24" 
+                                  FontWeight="Bold"
+                                  Foreground="#1A3D1F"
+                                  Margin="0,0,0,8"/>
+                        <TextBlock Text="Total Records: 1,247" 
+                                  FontSize="14" 
+                                  Foreground="#2F5233"
+                                  Margin="0,0,0,3"/>
+                        <TextBlock Text="Last Updated: Today"
+                                  FontSize="14" 
+                                  Foreground="#2F5233"/>
+                    </StackPanel>
 
-                        <Grid Grid.Row="0" Margin="0,0,0,20">
+                    <Border Grid.Column="1"
+                            Width="80" 
+                            Height="80"
+                            Background="#9CDCAB" 
+                            CornerRadius="40"
+                            VerticalAlignment="Center">
+                        <TextBlock Text="📊" 
+                                 FontSize="32" 
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Chart Area for Database Records -->
+            <Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"
+                    Background="White" 
+                    CornerRadius="16" 
+                    Padding="25"
+                    BorderBrush="#E0F2E3"
+                    BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Chart Header -->
+                    <Border Grid.Row="0"
+                            Background="#F0F8F2"
+                            CornerRadius="10"
+                            Padding="20"
+                            Margin="0,0,0,20">
+                        <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                <TextBlock Text="To-Do List" 
-                                          FontSize="18" 
+                            <TextBlock Grid.Column="0"
+                                      Text="📈"
+                                      FontSize="20"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,15,0"/>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Highest Crime Recorded"
+                                          FontSize="18"
                                           FontWeight="SemiBold"
-                                          Foreground="#333"
-                                          VerticalAlignment="Center" Width="153"/>
+                                          Foreground="#1A3D1F"
+                                          Margin="0,0,0,2"/>
+                                <TextBlock Text="Visual representation of your data over time"
+                                          FontSize="12"
+                                          Foreground="#4A6B4D"/>
                             </StackPanel>
 
-                            <Button x:Name="AddTaskButton" Height="50"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Content="+ "
-                                    FontSize="25"
-                                    FontWeight="Bold"
-                                    Foreground="#2D5A41"
-                                    Click="AddTaskButton_Click"
-                                    ToolTip="Add new note" Grid.ColumnSpan="2" Margin="450,0,0,0"/>
+                            <Border Grid.Column="2"
+                                    Background="#D8F0E0"
+                                    CornerRadius="15"
+                                    Padding="8,4">
+                                <TextBlock Text="Live Data"
+                                          FontSize="10"
+                                          FontWeight="Medium"
+                                          Foreground="#2F5233"/>
+                            </Border>
                         </Grid>
+                    </Border>
 
-                        <Border x:Name="NewTaskPanel"
-                                Grid.Row="1"
-                                Background="#F0F8F4" 
-                                CornerRadius="10" 
-                                Padding="15"
-                                Margin="0,0,0,15"
-                                Visibility="Collapsed">
-                            <Grid>
+                    <!-- Chart Container -->
+                    <Border Grid.Row="1"
+                            Background="#FAFCFB"
+                            CornerRadius="12"
+                            BorderBrush="#E8F5EA"
+                            BorderThickness="2"
+                            Padding="20">
+                        <Grid x:Name="ChartContainer">
+                            <!-- This is where your line chart control will be placed -->
+                            <TextBlock Text="Will put a line chart"
+                                      FontSize="16"
+                                      Foreground="#6B8E6E"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      FontStyle="Italic"/>
+                            
+                            <!-- Placeholder grid lines for visualization -->
+                            <Grid Background="Transparent" Opacity="0.3">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-
-                                <TextBox x:Name="NewTaskTextBox"
-                                        Grid.Row="0"
-                                        FontSize="14"
-                                        Padding="5"
-                                        BorderThickness="1"
-                                        BorderBrush="#D1EDE3"
-                                        Background="White"
-                                        Margin="0,0,0,10"
-                                        Text="Enter your note here..."
-                                        Foreground="#999"
-                                        GotFocus="NewTaskTextBox_GotFocus"
-                                        LostFocus="NewTaskTextBox_LostFocus"
-                                        KeyDown="NewTaskTextBox_KeyDown"/>
-
-                                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button x:Name="SaveTaskButton"
-                                            Content="Save"
-                                            Background="#2D5A41"
-                                            Foreground="White"
-                                            BorderThickness="0"
-                                            Padding="15,5"
-                                            Margin="0,0,10,0"
-                                            FontSize="12"
-                                            Click="SaveTaskButton_Click"/>
-                                    <Button x:Name="CancelTaskButton"
-                                            Content="Cancel"
-                                            Background="#999"
-                                            Foreground="White"
-                                            BorderThickness="0"
-                                            Padding="15,5"
-                                            FontSize="12"
-                                            Click="CancelTaskButton_Click"/>
-                                </StackPanel>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Horizontal grid lines -->
+                                <Rectangle Grid.Row="1" Grid.ColumnSpan="4" Height="1" Fill="#B8E6C6" VerticalAlignment="Top"/>
+                                <Rectangle Grid.Row="2" Grid.ColumnSpan="4" Height="1" Fill="#B8E6C6" VerticalAlignment="Top"/>
+                                <Rectangle Grid.Row="3" Grid.ColumnSpan="4" Height="1" Fill="#B8E6C6" VerticalAlignment="Top"/>
+                                
+                                <!-- Vertical grid lines -->
+                                <Rectangle Grid.Column="1" Grid.RowSpan="4" Width="1" Fill="#B8E6C6" HorizontalAlignment="Left"/>
+                                <Rectangle Grid.Column="2" Grid.RowSpan="4" Width="1" Fill="#B8E6C6" HorizontalAlignment="Left"/>
+                                <Rectangle Grid.Column="3" Grid.RowSpan="4" Width="1" Fill="#B8E6C6" HorizontalAlignment="Left"/>
                             </Grid>
-                        </Border>
-
-                        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                            <StackPanel x:Name="TasksContainer">
-
-                                <Border Background="#F9F9F9" 
-                                        CornerRadius="10" 
-                                        Padding="15" 
-                                        Margin="0,0,0,10">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <CheckBox Grid.Column="0" 
-                                                 VerticalAlignment="Top"
-                                                 Margin="0,2,15,0"
-                                                 Checked="TaskCheckBox_Checked"/>
-
-                                        <TextBlock Grid.Column="1"
-                                                  Text="Explore the app."
-                                                  FontWeight="Medium"
-                                                  FontSize="14"
-                                                  Foreground="#333"
-                                                  TextWrapping="Wrap"
-                                                  VerticalAlignment="Center"/>
-
-                                        <Button Grid.Column="2"
-                                                Content="×"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Foreground="#999"
-                                                FontSize="16"
-                                                Width="20"
-                                                Height="20"
-                                                VerticalAlignment="Top"
-                                                Click="DeleteTaskButton_Click"
-                                                ToolTip="Delete note"/>
-                                    </Grid>
-                                </Border>
-
-
-                            </StackPanel>
-                        </ScrollViewer>
-                    </Grid>
-                </Border>
-            </Grid>
-
-            <StackPanel Grid.Column="2">
-                <Border Background="White" 
-                        CornerRadius="15" 
-                        Padding="20"
-                        Margin="0,0,0,20">
-                    <StackPanel>
-                        <TextBlock Text="Quick Actions" 
-                                  FontSize="16" 
-                                  FontWeight="SemiBold"
-                                  Foreground="#333"
-                                  Margin="0,0,0,15"/>
-
-                        <Border Background="#F0F8F4" 
-                                CornerRadius="10" 
-                                Padding="15"
-                                Margin="0,0,0,10">
-                            <TextBlock Text="💡 Tip: Use the + button to add new notes to your to-do list. Checking a note will automatically remove it from the list!" 
-                                      FontSize="12"
-                                      Foreground="#4A7C59"
-                                      TextWrapping="Wrap"/>
-                        </Border>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
         </Grid>
     </Grid>
 </UserControl>
