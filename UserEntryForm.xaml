@@ -123,6 +123,59 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- DataGrid Header Style -->
+        <Style x:Key="DataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderBrush" Value="#E5E7EB"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- DataGrid Row Style -->
+        <Style x:Key="DataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E5E7EB"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F9FAFB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- DataGrid Cell Style -->
+        <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderBrush" Value="#E5E7EB"/>
+            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#EBF8FF"/>
+                    <Setter Property="Foreground" Value="#1E40AF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <Grid Background="#F6F6F8">
@@ -193,17 +246,174 @@
 
         <!-- Main Content Area -->
         <Grid Grid.Row="1" Background="#F6F6F8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="437*"/>
-                <ColumnDefinition Width="113*"/>
-            </Grid.ColumnDefinitions>
-            <Grid x:Name="ContentArea" Grid.ColumnSpan="2">
-                <TextBlock Text="Empty Resizable UserControl"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="Gray"/>
+            <Grid x:Name="ContentArea" Margin="0">
+                <!-- Maximized Convict Records Table -->
+                <Grid Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Table Header -->
+                    <Border Grid.Row="0"
+                            Background="#F8F9FA"
+                            BorderBrush="#E5E7EB"
+                            BorderThickness="0,0,0,1"
+                            Padding="20,15">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Convict Records"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Foreground="#374151"
+                                       VerticalAlignment="Center"/>
+                            <Button Background="Transparent"
+                                    BorderThickness="0"
+                                    Margin="15,0,0,0"
+                                    Cursor="Hand"
+                                    Padding="8">
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Data="M4 4V20L10.5 14L20 20V4H4Z"
+                                          Fill="#10B981"
+                                          Width="14"
+                                          Height="14"
+                                          Stretch="Uniform"
+                                          Margin="0,0,5,0"/>
+                                    <TextBlock Text="Refresh"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Foreground="#10B981"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Data Table -->
+                    <ScrollViewer Grid.Row="1"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"
+                                  Margin="0">
+                        <DataGrid x:Name="ConvictRecordsDataGrid"
+                                  AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="None"
+                                  Background="White"
+                                  RowHeaderWidth="0"
+                                  CanUserResizeRows="False"
+                                  CanUserReorderColumns="True"
+                                  CanUserSortColumns="True"
+                                  SelectionMode="Single"
+                                  SelectionUnit="FullRow"
+                                  ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
+                                  RowStyle="{StaticResource DataGridRowStyle}"
+                                  CellStyle="{StaticResource DataGridCellStyle}"
+                                  MinRowHeight="40">
+
+                            <DataGrid.Columns>
+                                <!-- Photo Column -->
+                                <DataGridTextColumn Header="Photo" 
+                                                    Binding="{Binding Photo}"
+                                                    Width="60"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Last Name Column -->
+                                <DataGridTextColumn Header="Last Name" 
+                                                    Binding="{Binding LastName}"
+                                                    Width="120"
+                                                    IsReadOnly="True"/>
+
+                                <!-- First Name Column -->
+                                <DataGridTextColumn Header="First Name" 
+                                                    Binding="{Binding FirstName}"
+                                                    Width="120"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Middle Name Column -->
+                                <DataGridTextColumn Header="Middle Name" 
+                                                    Binding="{Binding MiddleName}"
+                                                    Width="120"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Extension Name Column -->
+                                <DataGridTextColumn Header="Extension" 
+                                                    Binding="{Binding ExtensionName}"
+                                                    Width="80"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Gender Column -->
+                                <DataGridTextColumn Header="Gender" 
+                                                    Binding="{Binding Gender}"
+                                                    Width="80"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Birthday Column -->
+                                <DataGridTextColumn Header="Birthday" 
+                                                    Binding="{Binding Birthday}"
+                                                    Width="100"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Contact Number Column -->
+                                <DataGridTextColumn Header="Contact" 
+                                                    Binding="{Binding ContactNumber}"
+                                                    Width="120"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Barangay Column -->
+                                <DataGridTextColumn Header="Barangay" 
+                                                    Binding="{Binding Barangay}"
+                                                    Width="120"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Address Column -->
+                                <DataGridTextColumn Header="Address" 
+                                                    Binding="{Binding Address}"
+                                                    Width="150"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Criminal Case Column -->
+                                <DataGridTextColumn Header="Criminal Case" 
+                                                    Binding="{Binding CriminalCase}"
+                                                    Width="120"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Offense Committed Column -->
+                                <DataGridTextColumn Header="Offense Committed" 
+                                                    Binding="{Binding OffenseCommitted}"
+                                                    Width="140"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Description Column -->
+                                <DataGridTextColumn Header="Description" 
+                                                    Binding="{Binding Description}"
+                                                    Width="150"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Court Number Column -->
+                                <DataGridTextColumn Header="Court Number" 
+                                                    Binding="{Binding CourtNumber}"
+                                                    Width="100"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Date Admitted Column -->
+                                <DataGridTextColumn Header="Date Admitted" 
+                                                    Binding="{Binding DateAdmitted}"
+                                                    Width="110"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Status of Case Column -->
+                                <DataGridTextColumn Header="Status of Case" 
+                                                    Binding="{Binding StatusOfCase}"
+                                                    Width="120"
+                                                    IsReadOnly="True"/>
+
+                                <!-- Date Graduated Column -->
+                                <DataGridTextColumn Header="Date Graduated" 
+                                                    Binding="{Binding DateGraduated}"
+                                                    Width="120"
+                                                    IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
