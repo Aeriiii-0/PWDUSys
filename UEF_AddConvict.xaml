@@ -9,32 +9,51 @@
 
     <UserControl.Resources>
         <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="Height" Value="55"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#374151"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="12,8"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Foreground" Value="#374151"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border x:Name="border"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6"
-                                SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost"
-                                          Focusable="false"
-                                          HorizontalScrollBarVisibility="Hidden"
-                                          VerticalScrollBarVisibility="Hidden"
-                                          Margin="{TemplateBinding Padding}"
-                                          VerticalAlignment="Center"/>
-                        </Border>
+                        <Grid>
+                            <!-- Rounded border -->
+                            <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6"
+                            SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                      Focusable="false"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"
+                                      Margin="{TemplateBinding Padding}"
+                                      VerticalAlignment="Center"/>
+                            </Border>
+
+                            <!-- Placeholder text -->
+                            <TextBlock x:Name="Placeholder"
+                               Text="{TemplateBinding Tag}"
+                               Foreground="#374151"
+                               Margin="{TemplateBinding Padding}"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Visibility="Collapsed"/>
+                        </Grid>
+
                         <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Placeholder" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Opacity" TargetName="border" Value="0.56"/>
                             </Trigger>
@@ -50,6 +69,253 @@
             </Setter>
         </Style>
 
+
+
+        <!-- Custom ComboBox Style -->
+        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Height" Value="52"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#374151"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="toggleButton"
+                                          Grid.Column="2"
+                                          Focusable="false"
+                                          IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="border"
+                                                Background="Transparent"
+                                                BorderBrush="#374151"
+                                                BorderThickness="2"
+                                                CornerRadius="6"
+                                                SnapsToDevicePixels="True">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="30"/>
+                                                </Grid.ColumnDefinitions>
+                                                <!-- Arrow -->
+                                                <Path x:Name="arrow"
+                                                      Grid.Column="1"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      Data="M 0 0 L 4 4 L 8 0 Z"
+                                                      Fill="#374151"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="BorderBrush" TargetName="border" Value="#9CA3AF"/>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="true">
+                                                <Setter Property="BorderBrush" TargetName="border" Value="#10B981"/>
+                                                <Setter Property="RenderTransform" TargetName="arrow">
+                                                    <Setter.Value>
+                                                        <RotateTransform Angle="180" CenterX="4" CenterY="2"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="12,0,30,0"
+                                              IsHitTestVisible="False"/>
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Focusable="True"
+                                     Visibility="Hidden"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"
+                                     Margin="12,0,30,0"
+                                     FontSize="15"
+                                     FontWeight="Bold"
+                                     Foreground="#374151"/>
+                            <Popup x:Name="popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid x:Name="dropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="dropDownBorder"
+                                            Background="#f6f6f8"
+                                            BorderBrush="#9CA3AF"
+                                            BorderThickness="1"
+                                            CornerRadius="6"
+                                            Margin="0,2,0,0">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="#40000000" Direction="270" ShadowDepth="4" BlurRadius="8"/>
+                                        </Border.Effect>
+                                    </Border>
+                                    <ScrollViewer Margin="4,6,4,6"
+                                                  SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEditable" Value="true">
+                                <Setter Property="Visibility" TargetName="PART_EditableTextBox" Value="Visible"/>
+                                <Setter Property="Visibility" TargetName="contentPresenter" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ComboBox Item Style -->
+        <Style x:Key="ModernComboBoxItemStyle" TargetType="ComboBoxItem">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="0"
+                                CornerRadius="4"
+                                Margin="2,1">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#E6F7FF"/>
+                                <Setter Property="Foreground" Value="#10B981"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#10B981"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GenderButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="52"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#374151"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Focusable="False"
+                                              RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Selected state has highest priority -->
+                            <Trigger Property="Tag" Value="Selected">
+                                <Setter Property="Background" TargetName="border" Value="#4D10B981"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#10B981"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                            <!-- Only apply hover/press effects when NOT selected -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="true"/>
+                                    <Condition Property="Tag" Value="{x:Null}"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#9CA3AF"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsPressed" Value="true"/>
+                                    <Condition Property="Tag" Value="{x:Null}"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="border" Value="#4D10B981"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#10B981"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Focusable="False"
+                                              RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Opacity" TargetName="border" Value="0.8"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Opacity" TargetName="border" Value="0.9"/>
+                                <Setter Property="RenderTransform" TargetName="border">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Scrollbar styles unchanged -->
         <Style x:Key="ModernScrollBarThumb" TargetType="{x:Type Thumb}">
             <Setter Property="OverridesDefaultStyle" Value="true"/>
             <Setter Property="IsTabStop" Value="false"/>
@@ -191,38 +457,40 @@
         </Style>
     </UserControl.Resources>
 
-    <Border Background="White"
+    <Border Background="#f6f6f8"
             CornerRadius="12"
             Padding="30"
             materialDesign:ShadowAssist.ShadowDepth="Depth2"
             Width="500"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center" Height="915">
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" 
-                      Style="{StaticResource AestheticScrollViewer}">
+                      Style="{StaticResource AestheticScrollViewer}" Margin="0,48,0,69">
 
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Vertical" Margin="0,0,0,15">
                     <!-- Text Fields -->
                     <StackPanel Margin="10">
-                        <Label Content="Last Name*" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="LastNameTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="Last Name*" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <TextBox x:Name="LastNameTextBox" Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="First Name*" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="FirstNameTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="First Name*" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <TextBox x:Name="FirstNameTextBox" Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Middle Name*" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="MiddleNameTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="Middle Name*" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <TextBox x:Name="MiddleNameTextBox" Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Extension Name" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <ComboBox x:Name="ExtensionComboBox">
+                        <Label Content="Extension Name" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <ComboBox x:Name="ExtensionComboBox" 
+                                  Style="{StaticResource ModernComboBoxStyle}"
+                                  ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}">
                             <ComboBoxItem Content="Jr."/>
                             <ComboBoxItem Content="Sr."/>
                             <ComboBoxItem Content="I."/>
@@ -232,97 +500,401 @@
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Gender*" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <ComboBox x:Name="GenderComboBox">
-                            <ComboBoxItem Content="Male"/>
-                            <ComboBoxItem Content="Female"/>
-                        </ComboBox>
+                        <Label Content="Gender*" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button x:Name="MaleButton"
+                                    Grid.Column="0"
+                                    Content="Male"
+                                    FontSize="15"
+                                    Style="{StaticResource GenderButtonStyle}"
+                                    Click="MaleButton_Click"/>
+
+                            <Button x:Name="FemaleButton"
+                                    Grid.Column="2"
+                                    Content="Female"
+                                    FontSize="15"
+                                    Style="{StaticResource GenderButtonStyle}"
+                                    Click="FemaleButton_Click"/>
+                        </Grid>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Birthday*" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <DatePicker x:Name="BirthdayDatePicker"/>
+                        <Label Content="Birthday*" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Month ComboBox -->
+                            <ComboBox x:Name="BirthMonthComboBox" 
+                  Grid.Column="0"
+                  Style="{StaticResource ModernComboBoxStyle}"
+                  ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}" SelectedIndex="0">
+                                <ComboBoxItem Content="Month" IsEnabled="False" Foreground="LightGray"/>
+                                <ComboBoxItem Content="January" Tag="1"/>
+                                <ComboBoxItem Content="February" Tag="2"/>
+                                <ComboBoxItem Content="March" Tag="3"/>
+                                <ComboBoxItem Content="April" Tag="4"/>
+                                <ComboBoxItem Content="May" Tag="5"/>
+                                <ComboBoxItem Content="June" Tag="6"/>
+                                <ComboBoxItem Content="July" Tag="7"/>
+                                <ComboBoxItem Content="August" Tag="8"/>
+                                <ComboBoxItem Content="September" Tag="9"/>
+                                <ComboBoxItem Content="October" Tag="10"/>
+                                <ComboBoxItem Content="November" Tag="11"/>
+                                <ComboBoxItem Content="December" Tag="12"/>
+                            </ComboBox>
+
+                            <!-- Day ComboBox -->
+                            <ComboBox x:Name="BirthDayComboBox" 
+                  Grid.Column="2"
+                  Style="{StaticResource ModernComboBoxStyle}"
+                               ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}" SelectedIndex="0">
+                                <ComboBoxItem Content="Day" IsEnabled="False" Foreground="LightGray"/>
+                                <ComboBoxItem Content="1" Tag="1"/>
+                                <ComboBoxItem Content="2" Tag="2"/>
+                                <ComboBoxItem Content="3" Tag="3"/>
+                                <ComboBoxItem Content="4" Tag="4"/>
+                                <ComboBoxItem Content="5" Tag="5"/>
+                                <ComboBoxItem Content="6" Tag="6"/>
+                                <ComboBoxItem Content="7" Tag="7"/>
+                                <ComboBoxItem Content="8" Tag="8"/>
+                                <ComboBoxItem Content="9" Tag="9"/>
+                                <ComboBoxItem Content="10" Tag="10"/>
+                                <ComboBoxItem Content="11" Tag="11"/>
+                                <ComboBoxItem Content="12" Tag="12"/>
+                                <ComboBoxItem Content="13" Tag="13"/>
+                                <ComboBoxItem Content="14" Tag="14"/>
+                                <ComboBoxItem Content="15" Tag="15"/>
+                                <ComboBoxItem Content="16" Tag="16"/>
+                                <ComboBoxItem Content="17" Tag="17"/>
+                                <ComboBoxItem Content="18" Tag="18"/>
+                                <ComboBoxItem Content="19" Tag="19"/>
+                                <ComboBoxItem Content="20" Tag="20"/>
+                                <ComboBoxItem Content="21" Tag="21"/>
+                                <ComboBoxItem Content="22" Tag="22"/>
+                                <ComboBoxItem Content="23" Tag="23"/>
+                                <ComboBoxItem Content="24" Tag="24"/>
+                                <ComboBoxItem Content="25" Tag="25"/>
+                                <ComboBoxItem Content="26" Tag="26"/>
+                                <ComboBoxItem Content="27" Tag="27"/>
+                                <ComboBoxItem Content="28" Tag="28"/>
+                                <ComboBoxItem Content="29" Tag="29"/>
+                                <ComboBoxItem Content="30" Tag="30"/>
+                                <ComboBoxItem Content="31" Tag="31"/>
+                            </ComboBox>
+
+                            <!-- Year TextBox -->
+                            <TextBox x:Name="BirthYearTextBox" 
+                 Grid.Column="4"
+                 Style="{StaticResource RoundedTextBoxStyle}" Tag=" Year"/>
+                        </Grid>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Contact Number" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="ContactNumberTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="Contact Number" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <TextBox x:Name="ContactNumberTextBox" Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Barangay" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <ComboBox x:Name="BarangayComboBox">
-                            <ComboBoxItem Content="Dela Paz"/>
+                        <Label Content="Barangay" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <ComboBox x:Name="BarangayComboBox"
+                                  Style="{StaticResource ModernComboBoxStyle}"
+                                  ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}">
+                            <ComboBoxItem Content="Biñan (Poblacion)"/>
+                            <ComboBoxItem Content="Bungahan"/>
+                            <ComboBoxItem Content="Canlalay"/>
                             <ComboBoxItem Content="Casile"/>
+                            <ComboBoxItem Content="De La Paz"/>
+                            <ComboBoxItem Content="Ganado"/>
+                            <ComboBoxItem Content="San Francisco (Halang)"/>
+                            <ComboBoxItem Content="Langkiwa"/>
+                            <ComboBoxItem Content="Loma"/>
+                            <ComboBoxItem Content="Malaban"/>
+                            <ComboBoxItem Content="Malamig"/>
+                            <ComboBoxItem Content="Mamplasan"/>
+                            <ComboBoxItem Content="Platero"/>
+                            <ComboBoxItem Content="Poblacion"/>
+                            <ComboBoxItem Content="San Antonio"/>
+                            <ComboBoxItem Content="San José"/>
+                            <ComboBoxItem Content="San Vicente"/>
+                            <ComboBoxItem Content="Santo Domingo"/>
+                            <ComboBoxItem Content="Santo Niño"/>
+                            <ComboBoxItem Content="Santo Tomas (Calabuso)"/>
+                            <ComboBoxItem Content="Soro-soro"/>
+                            <ComboBoxItem Content="Timbao"/>
+                            <ComboBoxItem Content="Tubigan"/>
+                            <ComboBoxItem Content="Zapote"/>
                         </ComboBox>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Address" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="AddressTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="Address" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <TextBox x:Name="AddressTextBox" Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Criminal Case" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="CriminalCaseTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="Criminal Case" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <TextBox x:Name="CriminalCaseTextBox" Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Offense Committed" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="OffenseCommittedTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="Offense Committed*" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button x:Name="Offense1Button"
+                                    Grid.Column="0"
+                                    Content="Offense 1"
+                                    FontSize="15"
+                                    Style="{StaticResource GenderButtonStyle}"
+                                    Click="Offense1Button_Click"/>
+
+                            <Button x:Name="Offense2Button"
+                                    Grid.Column="2"
+                                    Content="Offense 2"
+                                    FontSize="15"
+                                    Style="{StaticResource GenderButtonStyle}"
+                                    Click="Offense2Button_Click"/>
+                        </Grid>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Description" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="DescriptionTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="Description" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <TextBox x:Name="DescriptionTextBox" Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Court Number" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="CourtNumberTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="Court Number" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <TextBox x:Name="CourtNumberTextBox" Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Committing Court" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="CommittingCourtTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
+                        <Label Content="Committing Court" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <ComboBox x:Name="CommittingCourtComboBox"
+                                  IsEditable="True"
+                                  Style="{StaticResource ModernComboBoxStyle}"
+                                  ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}">
+                            <ComboBoxItem Content="Biñan 1"/>
+                            <ComboBoxItem Content="Biñan 2"/>
+                            <ComboBoxItem Content="Biñan 3"/>
+                        </ComboBox>
+                    </StackPanel>
+
+
+                    <!-- Date Admitted DatePicker Section -->
+                    <StackPanel Margin="10">
+                        <Label Content="Date Admitted" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Month ComboBox -->
+                            <ComboBox x:Name="AdmittedMonthComboBox" 
+                          Grid.Column="0"
+                          Style="{StaticResource ModernComboBoxStyle}"
+                          ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}"  SelectedIndex="0">
+                                <ComboBoxItem Content="Month" IsEnabled="False" Foreground="LightGray"/>
+                                <ComboBoxItem Content="January" Tag="1"/>
+                                <ComboBoxItem Content="February" Tag="2"/>
+                                <ComboBoxItem Content="March" Tag="3"/>
+                                <ComboBoxItem Content="April" Tag="4"/>
+                                <ComboBoxItem Content="May" Tag="5"/>
+                                <ComboBoxItem Content="June" Tag="6"/>
+                                <ComboBoxItem Content="July" Tag="7"/>
+                                <ComboBoxItem Content="August" Tag="8"/>
+                                <ComboBoxItem Content="September" Tag="9"/>
+                                <ComboBoxItem Content="October" Tag="10"/>
+                                <ComboBoxItem Content="November" Tag="11"/>
+                                <ComboBoxItem Content="December" Tag="12"/>
+                            </ComboBox>
+
+                            <!-- Day ComboBox -->
+                            <ComboBox x:Name="AdmittedDayComboBox" 
+                          Grid.Column="2"
+                          Style="{StaticResource ModernComboBoxStyle}"
+                            ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}"  SelectedIndex="0">
+                                <ComboBoxItem Content="Day" IsEnabled="False" Foreground="LightGray"/>
+                                <ComboBoxItem Content="1" Tag="1"/>
+                                <ComboBoxItem Content="2" Tag="2"/>
+                                <ComboBoxItem Content="3" Tag="3"/>
+                                <ComboBoxItem Content="4" Tag="4"/>
+                                <ComboBoxItem Content="5" Tag="5"/>
+                                <ComboBoxItem Content="6" Tag="6"/>
+                                <ComboBoxItem Content="7" Tag="7"/>
+                                <ComboBoxItem Content="8" Tag="8"/>
+                                <ComboBoxItem Content="9" Tag="9"/>
+                                <ComboBoxItem Content="10" Tag="10"/>
+                                <ComboBoxItem Content="11" Tag="11"/>
+                                <ComboBoxItem Content="12" Tag="12"/>
+                                <ComboBoxItem Content="13" Tag="13"/>
+                                <ComboBoxItem Content="14" Tag="14"/>
+                                <ComboBoxItem Content="15" Tag="15"/>
+                                <ComboBoxItem Content="16" Tag="16"/>
+                                <ComboBoxItem Content="17" Tag="17"/>
+                                <ComboBoxItem Content="18" Tag="18"/>
+                                <ComboBoxItem Content="19" Tag="19"/>
+                                <ComboBoxItem Content="20" Tag="20"/>
+                                <ComboBoxItem Content="21" Tag="21"/>
+                                <ComboBoxItem Content="22" Tag="22"/>
+                                <ComboBoxItem Content="23" Tag="23"/>
+                                <ComboBoxItem Content="24" Tag="24"/>
+                                <ComboBoxItem Content="25" Tag="25"/>
+                                <ComboBoxItem Content="26" Tag="26"/>
+                                <ComboBoxItem Content="27" Tag="27"/>
+                                <ComboBoxItem Content="28" Tag="28"/>
+                                <ComboBoxItem Content="29" Tag="29"/>
+                                <ComboBoxItem Content="30" Tag="30"/>
+                                <ComboBoxItem Content="31" Tag="31"/>
+                            </ComboBox>
+
+                            <!-- Year TextBox -->
+                            <TextBox x:Name="AdmittedYearTextBox" 
+                         Grid.Column="4"
+                         Style="{StaticResource RoundedTextBoxStyle}" Tag=" Year"/>
+                        </Grid>
                     </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Date Admitted" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <DatePicker x:Name="DateAdmittedDatePicker"/>
-                    </StackPanel>
-
-                    <StackPanel Margin="10">
-                        <Label Content="Status of Case" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <ComboBox x:Name="StatusOfCaseComboBox">
+                        <Label Content="Status of Case" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <ComboBox x:Name="StatusOfCaseComboBox"
+                                  Style="{StaticResource ModernComboBoxStyle}"
+                                  ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}">
                             <ComboBoxItem Content="Ongoing"/>
                             <ComboBoxItem Content="Completed"/>
                             <ComboBoxItem Content="Dropped"/>
                         </ComboBox>
                     </StackPanel>
 
-                    <StackPanel Margin="10">
-                        <Label Content="Date Graduated" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <DatePicker x:Name="DateGraduatedDatePicker"/>
-                    </StackPanel>
 
                     <StackPanel Margin="10">
-                        <Label Content="Remarks" Margin="0,0,0,5" FontWeight="Medium" Foreground="#374151" FontSize="13"/>
-                        <TextBox x:Name="RemarksTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="63"/>
-                    </StackPanel>
-                </StackPanel>
+                        <Label Content="Date Graduated" Margin="0,0,0,5" FontWeight="Medium" Foreground="Black" FontSize="13"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,20,0,0">
-                    <Button Content="Cancel"
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            Margin="0,0,10,0"
-                            Foreground="#10B981"
-                            Click="Cancel_Click"/>
-                    <Button Content="Save"
-                            Style="{StaticResource MaterialDesignRaisedButton}"
-                            Background="#10B981"
-                            Foreground="White"
-                            Click="Save_Click"/>
+                            <!-- Month ComboBox -->
+                            <ComboBox x:Name="MonthGraduatedComboBox" 
+                                 Grid.Column="0"
+                                 Style="{StaticResource ModernComboBoxStyle}"
+                              ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}" SelectedIndex="0">
+                                <ComboBoxItem Content="Month" IsEnabled="False" Foreground="LightGray"/>
+                                <ComboBoxItem Content="January" Tag="1"/>
+                                <ComboBoxItem Content="February" Tag="2"/>
+                                <ComboBoxItem Content="March" Tag="3"/>
+                                <ComboBoxItem Content="April" Tag="4"/>
+                                <ComboBoxItem Content="May" Tag="5"/>
+                                <ComboBoxItem Content="June" Tag="6"/>
+                                <ComboBoxItem Content="July" Tag="7"/>
+                                <ComboBoxItem Content="August" Tag="8"/>
+                                <ComboBoxItem Content="September" Tag="9"/>
+                                <ComboBoxItem Content="October" Tag="10"/>
+                                <ComboBoxItem Content="November" Tag="11"/>
+                                <ComboBoxItem Content="December" Tag="12"/>
+                            </ComboBox>
+
+                            <!-- Day ComboBox -->
+                            <ComboBox x:Name="DayGraduatedComboBox" 
+                                 Grid.Column="2"
+                                 Style="{StaticResource ModernComboBoxStyle}"
+                                   ItemContainerStyle="{StaticResource ModernComboBoxItemStyle}" SelectedIndex="0">
+                                <ComboBoxItem Content="Day" IsEnabled="False" Foreground="LightGray"/>
+                                <ComboBoxItem Content="1" Tag="1"/>
+                                <ComboBoxItem Content="2" Tag="2"/>
+                                <ComboBoxItem Content="3" Tag="3"/>
+                                <ComboBoxItem Content="4" Tag="4"/>
+                                <ComboBoxItem Content="5" Tag="5"/>
+                                <ComboBoxItem Content="6" Tag="6"/>
+                                <ComboBoxItem Content="7" Tag="7"/>
+                                <ComboBoxItem Content="8" Tag="8"/>
+                                <ComboBoxItem Content="9" Tag="9"/>
+                                <ComboBoxItem Content="10" Tag="10"/>
+                                <ComboBoxItem Content="11" Tag="11"/>
+                                <ComboBoxItem Content="12" Tag="12"/>
+                                <ComboBoxItem Content="13" Tag="13"/>
+                                <ComboBoxItem Content="14" Tag="14"/>
+                                <ComboBoxItem Content="15" Tag="15"/>
+                                <ComboBoxItem Content="16" Tag="16"/>
+                                <ComboBoxItem Content="17" Tag="17"/>
+                                <ComboBoxItem Content="18" Tag="18"/>
+                                <ComboBoxItem Content="19" Tag="19"/>
+                                <ComboBoxItem Content="20" Tag="20"/>
+                                <ComboBoxItem Content="21" Tag="21"/>
+                                <ComboBoxItem Content="22" Tag="22"/>
+                                <ComboBoxItem Content="23" Tag="23"/>
+                                <ComboBoxItem Content="24" Tag="24"/>
+                                <ComboBoxItem Content="25" Tag="25"/>
+                                <ComboBoxItem Content="26" Tag="26"/>
+                                <ComboBoxItem Content="27" Tag="27"/>
+                                <ComboBoxItem Content="28" Tag="28"/>
+                                <ComboBoxItem Content="29" Tag="29"/>
+                                <ComboBoxItem Content="30" Tag="30"/>
+                                <ComboBoxItem Content="31" Tag="31"/>
+                            </ComboBox>
+
+                            <!-- Year TextBox -->
+                            <TextBox x:Name="YearGraduatedTextBox" 
+                            Grid.Column="4"
+                            Style="{StaticResource RoundedTextBoxStyle}" Tag=" Year"/>      
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Better Button Layout -->
+                    <Grid Margin="10,30,10,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="CancelButton"
+                                Grid.Column="0"
+                                Content="Cancel"
+                                Background="White"
+                                BorderBrush="#E5E7EB"
+                                Foreground="#374151"
+                                Height="45"
+                                FontWeight="Bold"
+                                FontSize="16"
+                                Style="{StaticResource ModernButtonStyle}"
+                                Click="Cancel_Click"/>
+
+                        <Button x:Name="AddConvictButton"
+                                Grid.Column="2"
+                                Content="Save"
+                                Background="#10B981"
+                                BorderBrush="#10B981"
+                                Foreground="White"
+                                Height="45"
+                                FontWeight="Bold"
+                                FontSize="16"
+                                Style="{StaticResource ModernButtonStyle}"
+                                Click="Save_Click"/>
+                    </Grid>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

@@ -87,7 +87,7 @@ namespace Social_Blade_Dashboard
                         Text = "Edit Info Content",
                         FontSize = 16,
                         Foreground = Brushes.Gray,
-                        HorizontalAlignment = HorizontalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center
                     });
                     break;
@@ -95,30 +95,19 @@ namespace Social_Blade_Dashboard
                 case "Add Convict":
                     var addConvictForm = new UEF_AddConvict
                     {
-                        HorizontalAlignment = HorizontalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
-                        Width = 700,
-                        Height = 800
+                        Width = 550,
+                        Height = 815
                     };
 
                     var wrapper = new Border
                     {
-                        Background = Brushes.White,
-                        CornerRadius = new CornerRadius(10),
-                        BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#10B981")),
-                        BorderThickness = new Thickness(3),
+                        Background = (Brush)new BrushConverter().ConvertFromString("#f6f6f8"),
                         Padding = new Thickness(20),
-                        HorizontalAlignment = HorizontalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
                         Child = addConvictForm,
-                        Effect = new System.Windows.Media.Effects.DropShadowEffect
-                        {
-                            BlurRadius = 12,
-                            ShadowDepth = 2,
-                            Direction = 270,
-                            Color = Colors.Black,
-                            Opacity = 0.2
-                        }
                     };
 
                     ContentArea.Children.Add(wrapper);
@@ -130,7 +119,7 @@ namespace Social_Blade_Dashboard
                         Text = "Unknown Tab",
                         FontSize = 16,
                         Foreground = Brushes.Gray,
-                        HorizontalAlignment = HorizontalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Center
                     });
                     break;
