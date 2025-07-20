@@ -48,6 +48,21 @@ namespace Social_Blade_Dashboard
             }
         }
 
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            
+            if (this.WindowState == WindowState.Minimized)
+            {
+                HeaderRow.Height = new GridLength(35);
+                HeaderPanel.Padding = new Thickness(3, 0, 3, 0);
+            }
+            else
+            {
+                HeaderRow.Height = new GridLength(60);
+                HeaderPanel.Padding = new Thickness(5, 0, 5, 0);
+            }
+        }
+
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -102,6 +117,65 @@ namespace Social_Blade_Dashboard
             }
 
             isSidebarExpanded = !isSidebarExpanded;
+        }
+
+        //movable frame
+        private bool isDragging = false;
+        private Point clickPosition;
+
+
+        private void HeaderPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                isDragging = true;
+                clickPosition = e.GetPosition(this);
+
+                HeaderPanel.CaptureMouse();
+
+                if (e.ClickCount == 2)
+                {
+                    BtnMaximizeRestore_Click(sender, null);
+                }
+            }
+        }
+
+        private void HeaderPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging && e.LeftButton == MouseButtonState.Pressed)
+            {
+                Point currentPosition = e.GetPosition(this);
+
+                double deltaX = currentPosition.X - clickPosition.X;
+                double deltaY = currentPosition.Y - clickPosition.Y;
+
+                this.Left += deltaX;
+                this.Top += deltaY;
+            }
+        }
+
+        private void HeaderPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (isDragging)
+            {
+                isDragging = false;
+                HeaderPanel.ReleaseMouseCapture();
+            }
+        }
+
+        private void HeaderPanel_MouseLeftButtonDown_Simple(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                if (e.ClickCount == 2)
+                {
+                    BtnMaximizeRestore_Click(sender, null);
+                }
+                else
+                {
+                    this.DragMove();
+                }
+            }
         }
 
         private void MenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)

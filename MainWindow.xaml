@@ -12,7 +12,8 @@
         ResizeMode="CanResize"
         Background="Transparent"
         AllowsTransparency="True"
-        WindowStyle="None">
+        WindowStyle="None"
+        StateChanged="Window_StateChanged">
 
     <Window.Resources>
         <SolidColorBrush x:Key="SidebarBaseColor" Color="#2b4a40"/>
@@ -85,7 +86,7 @@
         <materialDesign:Card Margin="10" UniformCornerRadius="15" Background="White">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="60"/>
+                    <RowDefinition x:Name="HeaderRow" Height="60"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -93,7 +94,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Row="0" Grid.ColumnSpan="2" Background="White" CornerRadius="15,15,0,0" Padding="5,0">
+                <!-- Added mouse event handlers to make the header draggable -->
+                <Border x:Name="HeaderPanel" Grid.Row="0" Grid.ColumnSpan="2" Background="White" CornerRadius="15,15,0,0" Padding="5,0"
+                        MouseLeftButtonDown="HeaderPanel_MouseLeftButtonDown"
+                        MouseMove="HeaderPanel_MouseMove"
+                        MouseLeftButtonUp="HeaderPanel_MouseLeftButtonUp">
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -135,17 +140,17 @@
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                             </StackPanel>
                         </ListBoxItem>
-                        <ListBoxItem Tag="Accounts">
+                        <ListBoxItem Tag="Files">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="FolderAccount" Width="67" Height="30"
+                                <materialDesign:PackIcon Kind="Account" Width="67" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
                                 <TextBlock Text="Entry Form" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                             </StackPanel>
                         </ListBoxItem>
-                        <ListBoxItem Tag="Files">
+                        <ListBoxItem Tag="Accounts">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Account" Width="67" Height="30"
+                                <materialDesign:PackIcon Kind="FolderAccount" Width="67" Height="30"
                                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
                                 <TextBlock Text="Profile" FontSize="16" FontWeight="Bold"
                                            Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
@@ -190,7 +195,7 @@
                 </StackPanel>
 
                 <Grid x:Name="RenderPages" Grid.Row="1" Grid.Column="1" Background="#f6f6f8">
-                    
+
                 </Grid>
             </Grid>
         </materialDesign:Card>

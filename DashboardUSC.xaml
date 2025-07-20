@@ -107,15 +107,15 @@
                                           VerticalAlignment="Center" Width="153"/>
                             </StackPanel>
 
-                            <Button x:Name="AddTaskButton" Height="40"
+                            <Button x:Name="AddTaskButton" Height="50"
                                     Background="Transparent"
                                     BorderThickness="0"
-                                    Content="+"
+                                    Content="+ "
                                     FontSize="25"
                                     FontWeight="Bold"
                                     Foreground="#2D5A41"
                                     Click="AddTaskButton_Click"
-                                    ToolTip="Add new note" Grid.ColumnSpan="2" Margin="476,0,0,0"/>
+                                    ToolTip="Add new note" Grid.ColumnSpan="2" Margin="450,0,0,0"/>
                         </Grid>
 
                         <Border x:Name="NewTaskPanel"
