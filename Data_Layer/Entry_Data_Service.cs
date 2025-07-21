@@ -21,6 +21,8 @@ namespace Data_Layer
             db = FirestoreDb.Create("pwsd-7f264");
         }
 
+        static List<Entry> CacheEntries = new List<Entry>();
+
         public bool Add_Entry(Entry entry)
         {
             try

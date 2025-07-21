@@ -23,6 +23,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Business_Layer\Business_Layer.csproj" />
+	  <ProjectReference Include="..\Common_Class\Common_Class.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Resource Include="loginLogo.png" />
 	  <Resource Include="PWUDS.png" />
 	</ItemGroup>

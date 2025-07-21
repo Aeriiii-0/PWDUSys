@@ -12,6 +12,9 @@ namespace Business_Layer
     {
         Entry_DataService dataService = new Entry_DataService();
 
+        public Entry_Business_Logic()
+        {
+        }
         public bool Add_Entry(Entry entry)
         {
             return dataService.Add_Entry(entry);
@@ -26,6 +29,11 @@ namespace Business_Layer
         public Entry SearchEntry(int caseId)
         {
             return dataService.Get_Entry_By_CaseID(caseId);
+        }
+
+        public async Task<List<Entry>> GetAllEntriesByBarangay(string barangay)
+        {
+            return await Query.TestGetFilteredRecords(barangay);
         }
 
     }
