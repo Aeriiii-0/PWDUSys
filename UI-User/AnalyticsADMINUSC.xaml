@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Social_Blade_Dashboard.AnalyticsUSC"
+﻿<UserControl x:Class="Social_Blade_Dashboard.AnalyticsADMINUSC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -163,6 +163,7 @@
                             <Button Content="Demographic and Case Status" Click="NavButton_Click" Tag="Active" x:Name="Tab1Btn" Style="{StaticResource NavButtonStyle}"/>
                             <Button Content="Monthly Crime Trends" Click="NavButton_Click" x:Name="Tab2Btn" Style="{StaticResource NavButtonStyle}"/>
                             <Button Content="Case Statistics" Click="NavButton_Click" x:Name="Tab3Btn" Style="{StaticResource NavButtonStyle}"/>
+                            <Button Content="Rankings" Click="NavButton_Click" x:Name="Tab4Btn" Style="{StaticResource NavButtonStyle}"/>
                         </StackPanel>
                     </Border>
 
@@ -361,6 +362,18 @@
             Margin="0,0,0,100"
             TooltipPosition="Top">
                                 </lvc:CartesianChart>
+
+                            </materialDesign:Card>
+                        </Grid>
+
+                        <!-- Tab 4 -->
+                        <Grid x:Name="Tab4Content" Visibility="Collapsed">
+                            <materialDesign:Card 
+Margin="10"
+Padding="20"
+HorizontalAlignment="Stretch"
+VerticalAlignment="Stretch">
+
 
                             </materialDesign:Card>
                         </Grid>
