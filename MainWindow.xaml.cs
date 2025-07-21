@@ -199,7 +199,7 @@ namespace Social_Blade_Dashboard
                         break;
 
                     case "Files":
-                        // files
+                        RenderPages.Children.Add(new UserProfile());
                         break;
 
                     case "Notifications":
