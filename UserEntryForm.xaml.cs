@@ -55,6 +55,7 @@ namespace Social_Blade_Dashboard
 
                 case "Add Convict":
                     ShowAddConvictModal();
+                    SearchButton.IsEnabled = false;
                     break;
 
                 default:
