@@ -9,7 +9,7 @@ namespace Social_Blade_Dashboard
     public partial class userLogin : Window
     {
         private bool isUsernamePlaceholder = true;
-
+        private bool isPasswordVisible = false;
         public userLogin()
         {
             InitializeComponent();
@@ -18,6 +18,8 @@ namespace Social_Blade_Dashboard
             UsernameTextBox.Text = "Username or email";
             UsernameTextBox.Foreground = new SolidColorBrush(Colors.Gray);
         }
+
+     //user
 
         private void UsernameTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -34,40 +36,99 @@ namespace Social_Blade_Dashboard
             if (string.IsNullOrWhiteSpace(UsernameTextBox.Text))
             {
                 UsernameTextBox.Text = "Username or email";
-                UsernameTextBox.Foreground = new SolidColorBrush(Colors.Gray);
+                UsernameTextBox.Foreground = new SolidColorBrush(Color.FromRgb(102, 102, 102)); // #666666
                 isUsernamePlaceholder = true;
             }
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // Get the entered credentials
             string username = isUsernamePlaceholder ? "" : UsernameTextBox.Text;
             string password = PasswordBox.Password;
 
-            // Basic validation
+            // Validate username
             if (string.IsNullOrWhiteSpace(username))
             {
                 MessageBox.Show("Please enter your username or email.", "Login Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                // Reset username to placeholder
+                ResetUsernameField();
+                PasswordBox.Clear();
                 return;
             }
 
+            // Validate password
             if (string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Please enter your password.", "Login Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                // Keep username as is, just clear password
+                ResetUsernameField();
+                PasswordBox.Clear();
                 return;
             }
 
-            // TODO: Add your authentication logic here
-            // For now, just show a success message
+            // Simulate login failure for now
+            bool loginSuccess = false; // Replace this with real logic
+
+            if (!loginSuccess)
+            {
+                MessageBox.Show("Invalid username or password.", "Login Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                ResetUsernameField();
+                PasswordBox.Clear();
+                return;
+            }
+
+            // Login success
             MessageBox.Show($"Login attempt for: {username}", "Login Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        // Example: Navigate to main window
-        // MainWindow mainWindow = new MainWindow();
-        // mainWindow.Show();
-        // this.Close();
 
 
+        private void ResetUsernameField()
+        {
+            UsernameTextBox.Text = "Username or email";
+            UsernameTextBox.Foreground = new SolidColorBrush(Color.FromRgb(102, 102, 102)); // #666666
+            isUsernamePlaceholder = true;
+        }
+
+        //pass
+        private void TogglePasswordVisibilityButton_Click(object sender, RoutedEventArgs e)
+        {
+            isPasswordVisible = !isPasswordVisible;
+
+            if (isPasswordVisible)
+            {
+                // Show plain text
+                VisiblePasswordBox.Text = PasswordBox.Password;
+                PasswordBox.Visibility = Visibility.Collapsed;
+                VisiblePasswordBox.Visibility = Visibility.Visible;
+                EyeIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
+            }
+            else
+            {
+                // Hide plain text
+                PasswordBox.Password = VisiblePasswordBox.Text;
+                PasswordBox.Visibility = Visibility.Visible;
+                VisiblePasswordBox.Visibility = Visibility.Collapsed;
+                EyeIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
+            }
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (!isPasswordVisible)
+                VisiblePasswordBox.Text = PasswordBox.Password;
+        }
+
+        private void VisiblePasswordBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isPasswordVisible)
+                PasswordBox.Password = VisiblePasswordBox.Text;
+        }
+
+
+        //custom top bar
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;

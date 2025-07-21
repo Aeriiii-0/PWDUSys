@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="loginLogo.png" />
 	  <None Remove="PWUDS.png" />
 	</ItemGroup>
 
@@ -21,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Resource Include="loginLogo.png" />
 	  <Resource Include="PWUDS.png" />
 	</ItemGroup>
 
