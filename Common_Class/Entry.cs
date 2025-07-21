@@ -53,7 +53,9 @@ namespace Common_Class
         public string dateAdmitted { get; set; }
         [JsonProperty("Date Graduated")]
         public string dateGraduated { get; set; }
+        public string description { get; set; }
 
+        public Entry(){}
         public Entry(int caseId, string firstName, string middleName, string lastName, string extensionName, string gender, string birthday, int age, string address, string phone, string barangay, string criminalCase, string offenseCommitted, string courtNumber, string status, string photoUrl)
         {
             this.caseId = caseId;
