@@ -207,7 +207,7 @@ namespace Social_Blade_Dashboard
                         break;
 
                     case "Analytics":
-                        RenderPages.Children.Add(new AnalyticsUSC());
+                        RenderPages.Children.Add(new AnalyticsADMINUSC());
                         break;
 
                     case "Settings":

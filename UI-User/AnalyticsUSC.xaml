@@ -73,13 +73,34 @@
         </StackPanel>
 
         <!-- Scrollable Content -->
-        <ScrollViewer Grid.Row="1" Margin="20,10,20,20" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" Margin="40,10,20,20" VerticalScrollBarVisibility="Auto">
             <StackPanel>
 
-                <TextBlock Text="Overview"
-             FontSize="30"
-             FontWeight="Bold"
-             Foreground="#DD000000" />
+                <!-- Overview Header with Year ComboBox -->
+                <Grid Margin="0,0,0,10">
+                    <TextBlock Text="Overview"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="#DD000000"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center" />
+
+                    <ComboBox x:Name="YearComboBox"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Center"
+                              Width="120"
+                              Height="40"
+                              FontSize="25"
+                              SelectedIndex="0"
+                              Margin="0,0,15,0"
+                              HorizontalContentAlignment="Center">
+                        <ComboBoxItem Content="2025" HorizontalContentAlignment="Center"/>
+                        <ComboBoxItem Content="2024" HorizontalContentAlignment="Center"/>
+                        <ComboBoxItem Content="2023" HorizontalContentAlignment="Center"/>
+                        <ComboBoxItem Content="2022" HorizontalContentAlignment="Center"/>
+                        <ComboBoxItem Content="2021" HorizontalContentAlignment="Center"/>
+                    </ComboBox>
+                </Grid>
 
                 <!-- Overview Cards Grid -->
                 <Grid Margin="0,10,0,20">
@@ -91,7 +112,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Card 1 -->
-                    <Border Background="#FF10B97C" CornerRadius="10" Padding="20" Margin="5" Grid.Column="0">
+                    <Border Background="#FF10B97C" CornerRadius="5" Padding="20" Margin="5" Grid.Column="0">
                         <StackPanel VerticalAlignment="Center" Margin="-7,0,-10,0">
                             <TextBlock Text="Total Recorded Population" FontSize="18" FontWeight="Bold" Foreground="White"/>
                             <TextBlock Text="5,000" FontSize="48" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
@@ -99,7 +120,7 @@
                     </Border>
 
                     <!-- Card 2 -->
-                    <Border Background="#FF338B19" CornerRadius="10" Padding="20" Margin="5" Grid.Column="1">
+                    <Border Background="#FF338B19" CornerRadius="5" Padding="20" Margin="5" Grid.Column="1">
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="Recorded Criminal Cases" FontSize="18" FontWeight="Bold" Foreground="White"/>
                             <TextBlock Text="1,000" FontSize="48" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
@@ -212,8 +233,8 @@
                                 </StackPanel>
                             </materialDesign:Card>
 
-                            
-                            
+
+
                             <!-- Population vs Offenders -->
                             <materialDesign:Card Margin="5,10,24,5" Padding="20" Grid.Column="1" Grid.RowSpan="2">
                                 <StackPanel Width="244">
@@ -267,7 +288,7 @@
                                         </StackPanel>
                                     </Border>
 
-                                
+
 
 
 

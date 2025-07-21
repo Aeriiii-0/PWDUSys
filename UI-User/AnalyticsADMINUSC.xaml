@@ -1,0 +1,396 @@
+﻿<UserControl x:Class="Social_Blade_Dashboard.AnalyticsADMINUSC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Social_Blade_Dashboard"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:materialDesignControls="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+            xmlns:lvcCore="clr-namespace:LiveChartsCore;assembly=LiveChartsCore"
+             mc:Ignorable="d"
+             d:DesignHeight="850"
+             d:DesignWidth="1100">
+
+
+    <UserControl.Resources>
+        <!-- Put this in your <Window.Resources> or App.xaml -->
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="8,8"/>
+            <Setter Property="Margin" Value="0,0,40,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Rectangle x:Name="UnderlineRect" 
+                               Height="3" 
+                               Fill="#10B981" 
+                               VerticalAlignment="Bottom" 
+                               Margin="0,0,0,-20"
+                               Visibility="Collapsed"
+                               RadiusX="2" RadiusY="2"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="#34D399"/>
+                            </Trigger>
+                            <Trigger Property="Tag" Value="Active">
+                                <Setter Property="Foreground" Value="#10B981"/>
+                                <Setter TargetName="UnderlineRect" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#F6F5F8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Fixed Header -->
+        <StackPanel Grid.Row="0" Margin="40,20,40,0">
+            <TextBlock Text="Analytics"
+                       FontSize="48"
+                       FontWeight="Bold"
+                       Foreground="#DD000000" />
+
+            <Separator Margin="0,10,0,10"
+                       Background="#FFD2D0D0"
+                       Height="2" />
+
+
+        </StackPanel>
+
+        <!-- Scrollable Content -->
+        <ScrollViewer Grid.Row="1" Margin="40,10,20,20" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- Overview Header with Year ComboBox -->
+                <Grid Margin="0,0,0,10">
+                    <TextBlock Text="Overview"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="#DD000000"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center" />
+
+                    <ComboBox x:Name="YearComboBox"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Center"
+                              Width="120"
+                              Height="40"
+                              FontSize="25"
+                              SelectedIndex="0"
+                              Margin="0,0,15,0"
+                              HorizontalContentAlignment="Center">
+                        <ComboBoxItem Content="2025" HorizontalContentAlignment="Center"/>
+                        <ComboBoxItem Content="2024" HorizontalContentAlignment="Center"/>
+                        <ComboBoxItem Content="2023" HorizontalContentAlignment="Center"/>
+                        <ComboBoxItem Content="2022" HorizontalContentAlignment="Center"/>
+                        <ComboBoxItem Content="2021" HorizontalContentAlignment="Center"/>
+                    </ComboBox>
+                </Grid>
+
+                <!-- Overview Cards Grid -->
+                <Grid Margin="0,10,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Card 1 -->
+                    <Border Background="#FF10B97C" CornerRadius="5" Padding="20" Margin="5" Grid.Column="0">
+                        <StackPanel VerticalAlignment="Center" Margin="-7,0,-10,0">
+                            <TextBlock Text="Total Recorded Population" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="5,000" FontSize="48" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 2 -->
+                    <Border Background="#FF338B19" CornerRadius="5" Padding="20" Margin="5" Grid.Column="1">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Recorded Criminal Cases" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="1,000" FontSize="48" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 3 -->
+                    <Border Background="#FF2B4A40" CornerRadius="10" Padding="20" Margin="5" Grid.Column="2">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Crime Rate" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="20%" FontSize="48" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 4 -->
+                    <Border Background="#FF4A7C59" CornerRadius="10" Padding="20" Margin="5" Grid.Column="3">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Baranggay" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Poblacion" FontSize="46" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Tab Section -->
+
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Navigation Bar -->
+                    <Border Grid.Row="0"
+            Background="White"
+            BorderBrush="#E5E5E5"
+            BorderThickness="0,0,0,1"
+            Padding="30,20">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Demographic and Case Status" Click="NavButton_Click" Tag="Active" x:Name="Tab1Btn" Style="{StaticResource NavButtonStyle}"/>
+                            <Button Content="Monthly Crime Trends" Click="NavButton_Click" x:Name="Tab2Btn" Style="{StaticResource NavButtonStyle}"/>
+                            <Button Content="Case Statistics" Click="NavButton_Click" x:Name="Tab3Btn" Style="{StaticResource NavButtonStyle}"/>
+                            <Button Content="Rankings" Click="NavButton_Click" x:Name="Tab4Btn" Style="{StaticResource NavButtonStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Tab Content Area -->
+                    <Grid Grid.Row="1" Margin="0,20,0,0">
+                        <!-- Tab 1 -->
+                        <Grid x:Name="Tab1Content" Visibility="Visible" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- Label -->
+                                <RowDefinition Height="*"/>
+                                <!-- Content -->
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*"/>
+                                <!-- New Chart -->
+                                <ColumnDefinition Width="1.9*"/>
+                                <!-- Population vs Offenders -->
+                                <ColumnDefinition Width="25"/>
+                                <!-- Separator -->
+                                <ColumnDefinition Width="3*"/>
+                                <!-- Combined Gender + Case -->
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Label -->
+                            <TextBlock Text="Demographic and Case Status"
+               FontSize="20"
+               FontWeight="Bold"
+               Foreground="Black"
+               Grid.Row="0"
+               Grid.Column="3"
+               Margin="5,0,0,10"
+               VerticalAlignment="Bottom"/>
+
+                            <!-- New Chart / Info -->
+                            <materialDesign:Card Margin="5,10,23,5" Padding="20" Grid.Column="0" Grid.RowSpan="2" Background="#FFF4FFF0">
+                                <StackPanel>
+                                    <TextBlock Text="Diagnostics" FontSize="30" FontWeight="Bold" Foreground="Black"/>
+
+
+                                    <!-- Data Info -->
+                                    <TextBlock FontSize="20" TextWrapping="Wrap" Margin="10,40,0,25">
+            <Run Text="Number of Repeat Offenders: " />
+            <Run Text="50"  TextDecorations="Underline" FontWeight="Bold"/>
+                                    </TextBlock>
+
+                                    <TextBlock FontSize="20" TextWrapping="Wrap" Margin="10,0,0,25">
+            <Run Text="Most Common Crime Type: " />
+            <Run Text="Shoplifting"  TextDecorations="Underline" FontWeight="Bold"/>
+                                    </TextBlock>
+
+                                    <TextBlock FontSize="20" TextWrapping="Wrap" Margin="10,0,0,25">
+            <Run Text="Month of the Year with Highest Crime Rate: " />
+            <Run Text="May"  TextDecorations="Underline" FontWeight="Bold" />
+                                    </TextBlock>
+
+                                    <TextBlock FontSize="20"  Margin="10,0,0,2">Recency Metric:</TextBlock>
+
+                                    <TextBlock FontSize="20" TextWrapping="Wrap" Margin="10,0,0,25">
+            <Run Text="Last Recorded Crime: " FontStyle="Italic"/>
+            <Run Text="July 15, 2025"  FontStyle="Italic" TextDecorations="Underline" FontWeight="Bold"/>
+                                    </TextBlock>
+
+                                    <TextBlock FontSize="20" TextWrapping="Wrap" Margin="10,0,0,15">
+            <Run Text="Average Number of Cases per Offender: "  />
+            <Run Text="1.8"   TextDecorations="Underline" FontWeight="Bold"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </materialDesign:Card>
+
+
+
+                            <!-- Population vs Offenders -->
+                            <materialDesign:Card Margin="5,10,24,5" Padding="20" Grid.Column="1" Grid.RowSpan="2">
+                                <StackPanel Width="244">
+                                    <!-- Title -->
+                                    <TextBlock Text="Population vs. Offenders"
+                   FontSize="19"
+                   FontWeight="Bold"
+                   Foreground="Black"
+                   Width="244"
+                                               Margin="5,5,24,5"
+                                               />
+
+                                    <!-- Pie Chart -->
+                                    <lvc:PieChart Series="{Binding popVSCase}"
+                      LegendPosition="Bottom"
+                      Margin="-50,20,0,10"
+                      Height="350"
+                      Width="350"/>
+
+                                    <!-- Additional Info Section -->
+                                    <Border Background="Transparent" Margin="0,40,0,0">
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                                            <!-- Male Offenders -->
+                                            <TextBlock FontSize="20" TextWrapping="Wrap" Margin="0,0,0,10">
+            <Run Text="Male Offenders Count: " />
+            <Run Text="500" FontWeight="Bold" TextDecorations="Underline"/>
+                                            </TextBlock>
+
+                                            <!-- Female Offenders -->
+                                            <TextBlock FontSize="20" TextWrapping="Wrap" Margin="0,0,0,10">
+            <Run Text="Female Offenders Count: " />
+            <Run Text="500" FontWeight="Bold" TextDecorations="Underline"/>
+                                            </TextBlock>
+
+                                            <!-- Criminal Density Rate -->
+                                            <TextBlock Text="Criminal Density Rate:" FontSize="20" Margin="0,0,0,5"/>
+                                            <TextBlock FontSize="20" TextWrapping="Wrap" Margin="0,0,0,15">
+            <Run Text="There are " FontStyle="Italic"/>
+            <Run Text="20" FontWeight="Bold" TextDecorations="Underline"/>
+            <Run Text=" offenders per " FontStyle="Italic"/>
+            <Run Text="1,000" FontWeight="Bold" TextDecorations="Underline"/>
+            <Run Text=" residents." FontStyle="Italic"/>
+                                            </TextBlock>
+
+                                            <!-- Change in Crime Involvement Rate -->
+                                            <TextBlock Text="Change in Crime Involvement Rate:" FontSize="20" Margin="0,0,0,5"/>
+                                            <TextBlock FontSize="20" TextWrapping="Wrap">
+            <Run Text="Crime involvement has increased by " FontStyle="Italic"/>
+            <Run Text="4%" FontWeight="Bold" TextDecorations="Underline"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Border>
+
+
+
+
+
+                                </StackPanel>
+                            </materialDesign:Card>
+
+
+                            <!-- Grey Vertical Separator -->
+                            <Border Grid.Column="2" Grid.RowSpan="2" Background="Gray" Width="1" HorizontalAlignment="Left" Margin="1,31,0,0"/>
+
+                            <!-- Gender + Case stacked vertically -->
+                            <StackPanel Grid.Row="1" Grid.Column="3" Margin="0,0,0,5">
+                                <!-- Gender Ratio -->
+                                <materialDesign:Card Margin="5,0,5,10" Padding="20" HorizontalAlignment="Stretch">
+                                    <StackPanel>
+                                        <TextBlock Text="Gender Ratio" FontSize="20" FontWeight="Bold" Foreground="Black"/>
+                                        <lvc:PieChart Series="{Binding genderRatioChart}" 
+                              LegendPosition="Right" 
+                              Margin="-20,10,0,0" 
+                              Height="330" 
+                              Width="470"/>
+                                    </StackPanel>
+                                </materialDesign:Card>
+
+                                <!-- Case Status Ratio -->
+                                <materialDesign:Card Margin="5,0,5,5" Padding="20" HorizontalAlignment="Stretch">
+                                    <StackPanel>
+                                        <TextBlock Text="Case Status Ratio" FontSize="20" FontWeight="Bold" Foreground="Black" Margin="0,0,0,10"/>
+                                        <lvc:PieChart Series="{Binding caseStatChart}" 
+                              LegendPosition="Right"
+                              Height="330" 
+                              Width="470"
+                              Margin="-20,10,0,0"/>
+                                    </StackPanel>
+                                </materialDesign:Card>
+                            </StackPanel>
+                        </Grid>
+
+
+
+
+                        <!-- Tab 2 -->
+                        <Grid x:Name="Tab2Content" Visibility="Collapsed">
+                            <materialDesign:Card Margin="10" Padding="20">
+                                <lvc:CartesianChart 
+            Series="{Binding MonthlySeries}"
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}"
+         
+            Height="400"
+            TooltipPosition="Top">
+                                </lvc:CartesianChart>
+                            </materialDesign:Card>
+                        </Grid>
+
+
+                        <!-- Tab 3 -->
+                        <Grid x:Name="Tab3Content" Visibility="Collapsed">
+                            <materialDesign:Card 
+        Margin="10"
+        Padding="20"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+
+                                <lvc:CartesianChart 
+            Series="{Binding CriminalCaseSeries}"
+            XAxes="{Binding CriminalXAxes}"
+            YAxes="{Binding CriminalYAxes}"
+            Height="500"
+            Margin="0,0,0,100"
+            TooltipPosition="Top">
+                                </lvc:CartesianChart>
+
+                            </materialDesign:Card>
+                        </Grid>
+
+                        <!-- Tab 4 -->
+                        <Grid x:Name="Tab4Content" Visibility="Collapsed">
+                            <materialDesign:Card 
+Margin="10"
+Padding="20"
+HorizontalAlignment="Stretch"
+VerticalAlignment="Stretch">
+
+
+                            </materialDesign:Card>
+                        </Grid>
+
+
+
+
+
+
+
+                    </Grid>
+
+                </Grid>
+
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>
