@@ -278,6 +278,7 @@ namespace Social_Blade_Dashboard
 
         private async Task<List<Entry>> LoadEntryAsync()
         {
+            //IMPORTANT change the barangay here barangGAYS
             string Barangay = "Poblacion";
             var entry = BusinessLogic.GetAllEntriesByBarangay(Barangay);
             return await entry;
