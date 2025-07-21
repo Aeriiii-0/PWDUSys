@@ -116,5 +116,104 @@ namespace Data_Layer
                 return $"An unexpected error occurred during photo upload: {ex.Message}";
             }
         }
+
+        public bool Update_Entry(Entry entry)
+        {
+            try
+            {
+                return Update_Entry_Helper(entry).Result; // Await Task result synchronously (not ideal, but works if needed)
+            }
+            catch (Exception e)
+            {
+                // Log error here if needed
+                return false;
+            }
+        }
+
+        public async Task<bool> Update_Entry_Helper(Entry entry)
+        {
+            try
+            {
+                string docName = "CaseId" + entry.caseId;
+                DocumentReference docRef = db.Collection("PWUDS").Document(docName);
+                Dictionary<string, object> data = new Dictionary<string, object>
+                {
+                    { "CaseId", entry.caseId },
+                    { "FirstName", entry.firstName },
+                    { "MiddleName", entry.middleName },
+                    { "LastName", entry.lastName },
+                    { "ExtensionName", entry.extensionName },
+                    { "Gender", entry.gender },
+                    { "Birthday", entry.birthday },
+                    { "Age", entry.age },
+                    { "Address", entry.address },
+                    { "Phone", entry.phone },
+                    { "Baranggay", entry.barangay },
+                    { "Criminal Case", entry.criminalCase },
+                    { "Offense Committed", entry.offenseCommitted },
+                    { "Court Number", entry.courtNumber },
+                    { "Status", entry.status },
+                    { "PhotoUrl", entry.photoUrl }
+                };
+
+                await docRef.SetAsync(data, SetOptions.Overwrite); // Overwrites the whole document
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+        public Entry Get_Entry_By_CaseID(int caseID)
+        {
+            return Get_Entry_By_CaseId_Helper(caseID).Result;
+        }
+
+        public async Task<Entry> Get_Entry_By_CaseId_Helper(int caseId)
+        {
+            try
+            {
+                string docName = "CaseId" + caseId;
+                DocumentReference docRef = db.Collection("PWUDS").Document(docName);
+
+                DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+
+                if (snapshot.Exists)
+                {
+                    Entry entry = new Entry
+                    (
+                        snapshot.GetValue<int>("CaseId"),
+                        snapshot.GetValue<string>("FirstName"),
+                        snapshot.GetValue<string>("MiddleName"),
+                        snapshot.GetValue<string>("LastName"),
+                        snapshot.GetValue<string>("ExtensionName"),
+                        snapshot.GetValue<string>("Gender"),
+                        snapshot.GetValue<string>("Birthday"),
+                        snapshot.GetValue<int>("Age"),
+                        snapshot.GetValue<string>("Address"),
+                        snapshot.GetValue<string>("Phone"),
+                        snapshot.GetValue<string>("Baranggay"),
+                        snapshot.GetValue<string>("Criminal Case"),
+                        snapshot.GetValue<string>("Offense Committed"),
+                        snapshot.GetValue<string>("Court Number"),
+                        snapshot.GetValue<string>("Status"),
+                        snapshot.GetValue<string>("PhotoUrl")
+                    );
+
+                    return entry;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
     }
 }
