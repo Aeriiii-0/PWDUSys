@@ -203,7 +203,7 @@ namespace Social_Blade_Dashboard
                         break;
 
                     case "Notifications":
-                        RenderPages.Children.Add(new PWDUS_Splash());
+              //          RenderPages.Children.Add(new PWDUS_Splash());
                         break;
 
                     case "Analytics":
