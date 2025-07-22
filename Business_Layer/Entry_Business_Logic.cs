@@ -10,25 +10,13 @@ namespace Business_Layer
 {
     public class Entry_Business_Logic
     {
-        Entry_DataService dataService;
-
-        public Entry_Business_Logic()
-        {
-            dataService = new Entry_DataService();
-        }
+        Entry_DataService dataService = new Entry_DataService();
 
         public bool Add_Entry(Entry entry)
         {
             return dataService.Add_Entry(entry);
         }
 
-        public async Task UploadInBackgroundAsync(string filePath, string fileName)
-        {
-             await dataService.UploadInBackgroundAsync(filePath, fileName);
-        }
-
-
-     
         public bool Update_Entry(Entry entry)
         {
             return dataService.Update_Entry(entry);
@@ -38,12 +26,6 @@ namespace Business_Layer
         public Entry SearchEntry(int caseId)
         {
             return dataService.Get_Entry_By_CaseID(caseId);
-        }
-
-
-        public async Task<List<Entry>> GetAllEntriesByBarangay(string barangay)
-        {
-            return await Query.TestGetFilteredRecords(barangay);
         }
 
     }

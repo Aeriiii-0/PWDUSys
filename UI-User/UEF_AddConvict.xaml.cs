@@ -1,24 +1,43 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Business_Layer;
-using Common_Class;
+using System.Windows.Input;
 
 namespace Social_Blade_Dashboard
 {
- 
+    public class ConvictData
+    {
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string ExtensionName { get; set; }
+        public string Gender { get; set; }
+        public string BirthMonth { get; set; }
+        public string BirthDay { get; set; }
+        public string BirthYear { get; set; }
+        public string ContactNumber { get; set; }
+        public string Barangay { get; set; }
+        public string Address { get; set; }
+        public string CriminalCase { get; set; }
+        public string OffenseCommitted { get; set; }
+        public string Description { get; set; }
+        public string CourtNumber { get; set; }
+        public string CommittingCourt { get; set; }
+        public string AdmittedMonth { get; set; }
+        public string AdmittedDay { get; set; }
+        public string AdmittedYear { get; set; }
+        public string StatusOfCase { get; set; }
+        public string GraduatedMonth { get; set; }
+        public string GraduatedDay { get; set; }
+        public string GraduatedYear { get; set; }
+    }
     public partial class UEF_AddConvict : UserControl
     {
-        Entry_Business_Logic businessLogic;
         public UEF_AddConvict()
         {
             InitializeComponent();
-            businessLogic = new Entry_Business_Logic();
         }
 
 
@@ -45,96 +64,65 @@ namespace Social_Blade_Dashboard
             Offense2Button.Tag = "Selected";
             Offense1Button.Tag = null;
         }
-        private int CalculateAge(string birthYear)
-{
-    if (int.TryParse(birthYear, out int year))
-    {
-        return DateTime.Now.Year - year;
-    }
-    return 0;
-}
-        //pwede lipat later sa bl
-        private bool ValidateConvictForm()
-        {
-            if (string.IsNullOrWhiteSpace(LastNameTextBox.Text) ||
-                string.IsNullOrWhiteSpace(FirstNameTextBox.Text) ||
-                string.IsNullOrWhiteSpace(ContactNumberTextBox.Text) ||
-                string.IsNullOrWhiteSpace(AddressTextBox.Text) ||
-                string.IsNullOrWhiteSpace(CriminalCaseTextBox.Text))
-            {
-                MessageBox.Show("Please fill in all required fields (First Name, Last Name, Contact, Address, Criminal Case).",
-                                "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
 
-            if (GetSelectedGender() == "")
-            {
-                MessageBox.Show("Please select a gender.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
-            if (!HasPhoto)
-            {
-                MessageBox.Show("Please upload a photo.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
-            return true;
-        }
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            var entry = new Entry
+
+            var convictData = new ConvictData
             {
-                caseId = 0, // Assuming caseId is auto-generated or handled by the database
-                firstName = FirstNameTextBox.Text,
-                middleName = MiddleNameTextBox.Text,
-                lastName = LastNameTextBox.Text,
-                extensionName = ExtensionComboBox.SelectedItem != null
-                 ? ((ComboBoxItem)ExtensionComboBox.SelectedItem).Content.ToString()
-                 : "",
-                gender = GetSelectedGender(),
-                birthday = $"{GetComboBoxValue(BirthMonthComboBox)}/{GetComboBoxValue(BirthDayComboBox)}/{BirthYearTextBox.Text}",
-                age = CalculateAge(BirthYearTextBox.Text), // Create a helper if needed
-                address = AddressTextBox.Text,
-                phone = ContactNumberTextBox.Text,
-                barangay = BarangayComboBox.SelectedItem != null
-                 ? ((ComboBoxItem)BarangayComboBox.SelectedItem).Content.ToString()
-                 : "",
-                criminalCase = CriminalCaseTextBox.Text,
-                offenseCommitted = GetSelectedOffense(),
-                courtNumber = CourtNumberTextBox.Text,
-                status = StatusOfCaseComboBox.SelectedItem != null
-                 ? ((ComboBoxItem)StatusOfCaseComboBox.SelectedItem).Content.ToString()
-                 : "",
-                photoUrl = _photoFileName // Temp filename to be finalized by Add_Entry_Helper
+                LastName = LastNameTextBox.Text,
+                FirstName = FirstNameTextBox.Text,
+                MiddleName = MiddleNameTextBox.Text,
+                ExtensionName = ExtensionComboBox.SelectedItem != null ?
+                    ((ComboBoxItem)ExtensionComboBox.SelectedItem).Content.ToString() : "",
+
+                Gender = GetSelectedGender(),
+
+                BirthMonth = GetComboBoxValue(BirthMonthComboBox),
+                BirthDay = GetComboBoxValue(BirthDayComboBox),
+                BirthYear = BirthYearTextBox.Text,
+
+                ContactNumber = ContactNumberTextBox.Text,
+                Barangay = BarangayComboBox.SelectedItem != null ?
+                    ((ComboBoxItem)BarangayComboBox.SelectedItem).Content.ToString() : "",
+                Address = AddressTextBox.Text,
+                CriminalCase = CriminalCaseTextBox.Text,
+
+                OffenseCommitted = GetSelectedOffense(),
+                Description = DescriptionTextBox.Text,
+                CourtNumber = CourtNumberTextBox.Text,
+                CommittingCourt = CommittingCourtComboBox.Text,
+
+                AdmittedMonth = GetComboBoxValue(AdmittedMonthComboBox),
+                AdmittedDay = GetComboBoxValue(AdmittedDayComboBox),
+                AdmittedYear = AdmittedYearTextBox.Text,
+
+                StatusOfCase = StatusOfCaseComboBox.SelectedItem != null ?
+                    ((ComboBoxItem)StatusOfCaseComboBox.SelectedItem).Content.ToString() : "",
+
+
+                GraduatedMonth = GetComboBoxValue(MonthGraduatedComboBox),
+                GraduatedDay = GetComboBoxValue(DayGraduatedComboBox),
+                GraduatedYear = YearGraduatedTextBox.Text
             };
-            if (ValidateConvictForm()==false)
-            {
-                return;
-            }
 
-
-
-            businessLogic.Add_Entry(entry);
-        
             string message = $"Collected Data:\n" +
-                           $"Name: {entry.lastName}, {entry.firstName} {entry.middleName} {entry.extensionName}\n" +
-                           $"Gender: {entry.gender}\n" +
-                           $"Birthday: {entry.birthday}\n" +
-                           $"Contact: {entry.phone}\n" +
-                           $"Barangay: {entry.barangay}\n" +
-                           $"Address: {entry.address}\n" +
-                           $"Criminal Case: {entry.criminalCase}\n" +
-                           $"Offense: {entry.offenseCommitted}\n" +
-                           $"Description: {entry.description}\n" +
-                           $"Court Number: {entry.courtNumber}\n" +
-                           $"Committing Court: {entry.courtNumber}\n" +
-                           $"Date Admitted: {entry.dateAdmitted}\n" +
-                           $"Status: {entry.status}\n" +
-                           $"Date Graduated: {entry.dateGraduated}";
+                           $"Name: {convictData.LastName}, {convictData.FirstName} {convictData.MiddleName} {convictData.ExtensionName}\n" +
+                           $"Gender: {convictData.Gender}\n" +
+                           $"Birthday: {convictData.BirthMonth}/{convictData.BirthDay}/{convictData.BirthYear}\n" +
+                           $"Contact: {convictData.ContactNumber}\n" +
+                           $"Barangay: {convictData.Barangay}\n" +
+                           $"Address: {convictData.Address}\n" +
+                           $"Criminal Case: {convictData.CriminalCase}\n" +
+                           $"Offense: {convictData.OffenseCommitted}\n" +
+                           $"Description: {convictData.Description}\n" +
+                           $"Court Number: {convictData.CourtNumber}\n" +
+                           $"Committing Court: {convictData.CommittingCourt}\n" +
+                           $"Date Admitted: {convictData.AdmittedMonth}/{convictData.AdmittedDay}/{convictData.AdmittedYear}\n" +
+                           $"Status: {convictData.StatusOfCase}\n" +
+                           $"Date Graduated: {convictData.GraduatedMonth}/{convictData.GraduatedDay}/{convictData.GraduatedYear}";
 
             MessageBox.Show(message, "Convict Data Collected", MessageBoxButton.OK, MessageBoxImage.Information);
-
 
 
             ClearAllFields();
@@ -182,7 +170,7 @@ namespace Social_Blade_Dashboard
         private byte[] _photoData;
         private string _photoFileName;
 
-        private async void PhotoUpload_Click(object sender, MouseButtonEventArgs e)
+        private void PhotoUpload_Click(object sender, MouseButtonEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -195,28 +183,18 @@ namespace Social_Blade_Dashboard
             {
                 try
                 {
-                    string selectedFile = openFileDialog.FileName;
-                    _photoFileName = Path.GetFileName(selectedFile);
+                    
+                    _photoData = File.ReadAllBytes(openFileDialog.FileName);
+                    _photoFileName = Path.GetFileName(openFileDialog.FileName);
 
-                    // Load image on background thread to avoid freezing
-                    var imageData = await Task.Run(() => File.ReadAllBytes(selectedFile));
-                    _photoData = imageData;
-
-                    // Update UI with the loaded image
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     bitmap.StreamSource = new MemoryStream(_photoData);
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad; // Ensures the stream is closed
                     bitmap.EndInit();
-                    bitmap.Freeze(); // Allow cross-thread access
 
                     UploadedPhotoImage.Source = bitmap;
                     UploadedPhotoImage.Visibility = Visibility.Visible;
                     DefaultPhotoIcon.Visibility = Visibility.Collapsed;
-
-                    // Start upload in the background (fire-and-forget)
-                    string uniqueFileName = $"{Path.GetFileNameWithoutExtension(selectedFile)}_{DateTime.Now:yyyyMMdd_HHmmss}{Path.GetExtension(selectedFile)}";
-                    _ = businessLogic.UploadInBackgroundAsync(selectedFile, uniqueFileName);
                 }
                 catch (Exception ex)
                 {
@@ -225,7 +203,7 @@ namespace Social_Blade_Dashboard
             }
         }
 
-
+        
         public byte[] PhotoData => _photoData;
         public string PhotoFileName => _photoFileName;
         public bool HasPhoto => _photoData != null;
