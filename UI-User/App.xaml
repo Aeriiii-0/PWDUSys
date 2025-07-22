@@ -1,7 +1,11 @@
 ﻿<Application x:Class="Social_Blade_Dashboard.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+<<<<<<< HEAD
+             StartupUri="mainWindow.xaml">
+=======
              StartupUri="MainWindow.xaml">
+>>>>>>> parent of b5581d9 (Merge branch 'main' of https://github.com/Aeriiii-0/PWDUSys)
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
