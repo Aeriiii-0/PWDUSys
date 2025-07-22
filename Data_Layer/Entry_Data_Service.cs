@@ -18,6 +18,10 @@ namespace Data_Layer
         private readonly StorageClient storageClient;
         private string tempPhotoUrl = null; // Store the temporary photo URL
         private string tempPhotoFileName = null;
+        Dictionary<int, object> cache = new Dictionary<int, object>();
+
+
+
         public Entry_DataService()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "pwsd-7f264-firebase-adminsdk-fbsvc-93a2654d90.json";
@@ -26,42 +30,9 @@ namespace Data_Layer
             storageClient = StorageClient.Create();
         }
 
-        static List<Entry> CacheEntries = new List<Entry>();
-
         //user Methods
 
-        public async Task<string> AuthenticateUserAsync(string username, string password)
-        {
-            try
-            {
-                // Query Firestore collection 'Users'
-                Google.Cloud.Firestore.Query usersQuery = db.Collection("Users")
-                                      .WhereEqualTo("usermail", username)
-                                     .WhereEqualTo("password", password);
-
-                QuerySnapshot snapshot = await usersQuery.GetSnapshotAsync();
-
-                if (snapshot.Documents.Count == 0)
-                {
-                    // No user found with given username & password
-                    return null;
-                }
-
-                // Retrieve the first matched user document
-                DocumentSnapshot userDoc = snapshot.Documents[0];
-
-                // Retrieve the Role field (case-sensitive in Firestore)
-                string role = userDoc.ContainsField("Role") ? userDoc.GetValue<string>("Role") : null;
-
-                return role;  // Could be "user", "admin", etc.
-            }
-            catch (Exception ex)
-            {
-                return null;
-                throw new ApplicationException($"Error authenticating user: {ex.Message}");
-             
-            }
-        }
+        
 
 
         //Entry
@@ -205,12 +176,23 @@ namespace Data_Layer
                 return false;
             }
         }
+
+        //will return bool false if there is error adding entry or the entry already exist
+        //return true if successful
         public bool Add_Entry(Entry entry)
         {
             try
             {
+                
+                if (checkCache(entry.caseId))
+                {
+                    return false;
+                }
+
+                cache.Add(entry.caseId, entry);
                 Add_Entry_Helper(entry);
                 return true;
+
             }
             catch (Exception e)
             {
@@ -278,6 +260,8 @@ namespace Data_Layer
                 {"Date Graduated", entry.dateGraduated }// Store the download URL here
             };
 
+            
+
             // --- Await the Firestore SetAsync operation ---
             await col1.SetAsync(data);
         }
@@ -289,6 +273,7 @@ namespace Data_Layer
         {
             try
             {
+                cache[entry.caseId] = entry;
                 return Update_Entry_Helper(entry).Result; // Await Task result synchronously (not ideal, but works if needed)
             }
             catch (Exception e)
@@ -301,6 +286,10 @@ namespace Data_Layer
        
         public Entry Get_Entry_By_CaseID(int caseID)
         {
+            if (checkCache(caseID))
+            {
+                return GetEntryFromCache(caseID);
+            }
             return Get_Entry_By_CaseId_Helper(caseID).Result;
         }
 
@@ -310,7 +299,6 @@ namespace Data_Layer
             {
                 string docName = "CaseId" + caseId;
                 DocumentReference docRef = db.Collection("PWUDS").Document(docName);
-
                 DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
                 if (snapshot.Exists)
@@ -335,6 +323,7 @@ namespace Data_Layer
                         snapshot.GetValue<string>("PhotoUrl")
                     );
 
+                    cache.Add(entry.caseId, entry);
                     return entry;
                 }
                 else
@@ -346,6 +335,23 @@ namespace Data_Layer
             {
                 return null;
             }
+        }
+
+        //return bool whether the entry is in cache
+        bool checkCache(int caseID)
+        {
+            if (cache.ContainsKey(caseID))
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        //get entry from cache
+        Entry GetEntryFromCache(int caseID)
+        {
+            return (Entry)cache[caseID];
         }
 
     }

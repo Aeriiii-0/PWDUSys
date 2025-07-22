@@ -15,13 +15,13 @@ namespace Social_Blade_Dashboard
     {
         private bool isUsernamePlaceholder = true;
         private bool isPasswordVisible = false;
-        Entry_Business_Logic businessLogic;
+        User_Business_Logic User_Business_Logic;
   
         public userLogin()
         {
 
             InitializeComponent();
-            businessLogic = new Entry_Business_Logic();
+            User_Business_Logic = new User_Business_Logic();
        
             UsernameTextBox.Text = "Username or email";
             UsernameTextBox.Foreground = new SolidColorBrush(Colors.Gray);
@@ -79,7 +79,7 @@ namespace Social_Blade_Dashboard
             try
             {
                 // Authenticate user using Firestore
-                string role = await businessLogic.AuthenticateUserAsync(username, password);
+                string role = User_Business_Logic.AuthenticateUserAsync(username, password);
 
                 if (string.IsNullOrEmpty(role))
                 {

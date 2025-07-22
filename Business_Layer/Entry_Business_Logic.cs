@@ -10,17 +10,12 @@ namespace Business_Layer
 {
     public class Entry_Business_Logic
     {
-        Entry_DataService dataService = new Entry_DataService();
+        Entry_DataService dataService;
 
         public Entry_Business_Logic()
         {
+            dataService = new Entry_DataService();
         }
-
-        public async Task<string> AuthenticateUserAsync(string username, string password)
-        {
-            return await dataService.AuthenticateUserAsync(username, password);
-        }
-
 
         public bool Add_Entry(Entry entry)
         {
