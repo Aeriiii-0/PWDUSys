@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Business_Layer;
+using Common_Class;
+using Google.Cloud.Firestore;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,6 +15,7 @@ namespace Social_Blade_Dashboard
     public partial class UserEntryForm : UserControl
     {
         private UIElement backgroundContent;
+        private Entry_Business_Logic BusinessLogic = new Entry_Business_Logic();
 
         public UserEntryForm()
         {
@@ -39,18 +44,18 @@ namespace Social_Blade_Dashboard
             LoadTabContent(activeButton.Content.ToString());
         }
 
-        private void LoadTabContent(string tabName)
+        private async void LoadTabContent(string tabName)
         {
             ContentArea.Children.Clear();
 
             switch (tabName)
             {
                 case "View Convicts":
-                    ContentArea.Children.Add(CreateConvictRecordsView());
+                    ContentArea.Children.Add(await CreateConvictRecordsView());
                     break;
 
                 case "Edit Info":
-                    ContentArea.Children.Add(CreateConvictRecordsView());
+                    ContentArea.Children.Add(await CreateConvictRecordsView());
                     break;
 
                 case "Add Convict":
@@ -71,9 +76,9 @@ namespace Social_Blade_Dashboard
             }
         }
 
-        private void ShowAddConvictModal()
+        private async void ShowAddConvictModal()
         {
-            backgroundContent = CreateConvictRecordsView();
+            backgroundContent = await CreateConvictRecordsView();
 
             var blurEffect = new BlurEffect
             {
@@ -119,7 +124,7 @@ namespace Social_Blade_Dashboard
             SetActiveTab(ViewConvictsBtn);
         }
 
-        private UIElement CreateConvictRecordsView()
+        private async Task<UIElement> CreateConvictRecordsView()
         {
 
             var container = new Grid();
@@ -217,40 +222,49 @@ namespace Social_Blade_Dashboard
                 CellStyle = (Style)FindResource("DataGridCellStyle"),
                 Margin = new Thickness(0)
             };
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Case Number", Binding = new System.Windows.Data.Binding("caseId"), Width = 200, IsReadOnly = true });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Barangay", Binding = new System.Windows.Data.Binding("barangay"), Width = 150, IsReadOnly = true });
 
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Photo", Binding = new System.Windows.Data.Binding("Photo"), Width = 60, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Last Name", Binding = new System.Windows.Data.Binding("LastName"), Width = 120, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "First Name", Binding = new System.Windows.Data.Binding("FirstName"), Width = 120, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Middle Name", Binding = new System.Windows.Data.Binding("MiddleName"), Width = 120, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Extension Name", Binding = new System.Windows.Data.Binding("ExtensionName"), Width = 100, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Gender", Binding = new System.Windows.Data.Binding("Gender"), Width = 80, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Photo", Binding = new System.Windows.Data.Binding("Photo"), Width = 60, IsReadOnly = true });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Last Name", Binding = new System.Windows.Data.Binding("lastName"), Width = 120, IsReadOnly = true });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "First Name", Binding = new System.Windows.Data.Binding("firstName"), Width = 120, IsReadOnly = true });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Middle Name", Binding = new System.Windows.Data.Binding("middleName"), Width = 120, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Extension Name", Binding = new System.Windows.Data.Binding("ExtensionName"), Width = 100, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Gender", Binding = new System.Windows.Data.Binding("Gender"), Width = 80, IsReadOnly = true });
 
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Birth Month", Binding = new System.Windows.Data.Binding("BirthMonth"), Width = 90, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Birth Day", Binding = new System.Windows.Data.Binding("BirthDay"), Width = 70, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Birth Year", Binding = new System.Windows.Data.Binding("BirthYear"), Width = 90, IsReadOnly = true });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Offense Committed", Binding = new System.Windows.Data.Binding("offenseCommitted"), Width = 200, IsReadOnly = true });
 
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Contact Number", Binding = new System.Windows.Data.Binding("ContactNumber"), Width = 120, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Barangay", Binding = new System.Windows.Data.Binding("Barangay"), Width = 150, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Address", Binding = new System.Windows.Data.Binding("Address"), Width = 250, IsReadOnly = true });
 
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Criminal Case", Binding = new System.Windows.Data.Binding("CriminalCase"), Width = 200, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Offense Committed", Binding = new System.Windows.Data.Binding("OffenseCommitted"), Width = 200, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Description", Binding = new System.Windows.Data.Binding("Description"), Width = 250, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Birth Month", Binding = new System.Windows.Data.Binding("BirthMonth"), Width = 90, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Birth Day", Binding = new System.Windows.Data.Binding("BirthDay"), Width = 70, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Birth Year", Binding = new System.Windows.Data.Binding("BirthYear"), Width = 90, IsReadOnly = true });
 
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Court Number", Binding = new System.Windows.Data.Binding("CourtNumber"), Width = 150, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Committing Court", Binding = new System.Windows.Data.Binding("CommittingCourt"), Width = 150, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Contact Number", Binding = new System.Windows.Data.Binding("ContactNumber"), Width = 120, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Address", Binding = new System.Windows.Data.Binding("Address"), Width = 250, IsReadOnly = true });
 
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Admitted Month", Binding = new System.Windows.Data.Binding("AdmittedMonth"), Width = 100, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Admitted Day", Binding = new System.Windows.Data.Binding("AdmittedDay"), Width = 80, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Admitted Year", Binding = new System.Windows.Data.Binding("AdmittedYear"), Width = 100, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Criminal Case", Binding = new System.Windows.Data.Binding("CriminalCase"), Width = 200, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Description", Binding = new System.Windows.Data.Binding("Description"), Width = 250, IsReadOnly = true });
 
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Status Of Case", Binding = new System.Windows.Data.Binding("StatusOfCase"), Width = 150, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Court Number", Binding = new System.Windows.Data.Binding("CourtNumber"), Width = 150, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Committing Court", Binding = new System.Windows.Data.Binding("CommittingCourt"), Width = 150, IsReadOnly = true });
 
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Graduated Month", Binding = new System.Windows.Data.Binding("GraduatedMonth"), Width = 110, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Graduated Day", Binding = new System.Windows.Data.Binding("GraduatedDay"), Width = 90, IsReadOnly = true });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Graduated Year", Binding = new System.Windows.Data.Binding("GraduatedYear"), Width = 110, IsReadOnly = true });
 
-            dataGrid.ItemsSource = LoadConvicts();
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Admitted Date", Binding = new System.Windows.Data.Binding("dateAdmitted"), Width = 110, IsReadOnly = true });
+
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Admitted Month", Binding = new System.Windows.Data.Binding("AdmittedMonth"), Width = 100, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Admitted Day", Binding = new System.Windows.Data.Binding("AdmittedDay"), Width = 80, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Admitted Year", Binding = new System.Windows.Data.Binding("AdmittedYear"), Width = 100, IsReadOnly = true });
+
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Status Of Case", Binding = new System.Windows.Data.Binding("status"), Width = 150, IsReadOnly = true });
+
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Date Graduated", Binding = new System.Windows.Data.Binding("dateGraduated"), Width = 110, IsReadOnly = true });
+
+
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Graduated Month", Binding = new System.Windows.Data.Binding("GraduatedMonth"), Width = 110, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Graduated Day", Binding = new System.Windows.Data.Binding("GraduatedDay"), Width = 90, IsReadOnly = true });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "Graduated Year", Binding = new System.Windows.Data.Binding("GraduatedYear"), Width = 110, IsReadOnly = true });
+
+            dataGrid.ItemsSource = await LoadEntryAsync();
 
 
             container.Children.Add(headerBorder);
@@ -262,16 +276,17 @@ namespace Social_Blade_Dashboard
             return container;
         }
 
-        private List<Convict> LoadConvicts()
+        private async Task<List<Entry>> LoadEntryAsync()
         {
-            return new List<Convict>();
+            //IMPORTANT change the barangay here barangGAYS
+            string Barangay = "Poblacion";
+            var entry = BusinessLogic.GetAllEntriesByBarangay(Barangay);
+            return await entry;
         }
-
-        //tatanggalin q 2 wala pa lang naka-connect
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             ContentArea.Children.Clear();
-            ContentArea.Children.Add(CreateConvictRecordsView());
+            ContentArea.Children.Add(await CreateConvictRecordsView());
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -300,33 +315,5 @@ namespace Social_Blade_Dashboard
                 Console.WriteLine($"Searching for: {searchText}");
             }
         }
-    }
-
-    //tatanggalin q 2 wala pa lang naka-connect
-    public class Convict
-    {
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public string ExtensionName { get; set; }
-        public string Gender { get; set; }
-        public string BirthMonth { get; set; }
-        public string BirthDay { get; set; }
-        public string BirthYear { get; set; }
-        public string ContactNumber { get; set; }
-        public string Barangay { get; set; }
-        public string Address { get; set; }
-        public string CriminalCase { get; set; }
-        public string OffenseCommitted { get; set; }
-        public string Description { get; set; }
-        public string CourtNumber { get; set; }
-        public string CommittingCourt { get; set; }
-        public string AdmittedMonth { get; set; }
-        public string AdmittedDay { get; set; }
-        public string AdmittedYear { get; set; }
-        public string StatusOfCase { get; set; }
-        public string GraduatedMonth { get; set; }
-        public string GraduatedDay { get; set; }
-        public string GraduatedYear { get; set; }
     }
 }

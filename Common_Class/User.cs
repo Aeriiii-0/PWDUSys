@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Common_Class
 {
-    internal class Users
+    public class User
     {
         string usermail { get; set; }
         string password { get; set; }
         string roles { get; set; }
-        
     }
 }
